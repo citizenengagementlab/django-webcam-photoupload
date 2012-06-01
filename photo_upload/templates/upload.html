@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{%block form%}
+<h1>Upload a Photo</h1>
+<form action="" method="POST" enctype="multipart/form-data">
+	{% csrf_token %}
+	{{form.as_p}}
+	<input type="submit" value="Send" />
+</form>
+
+
+{%endblock%}
+
+
+<script type="text/javascript">
+$("document").ready(function() {
+$("#camera").webcam({
+        width: 320,
+        height: 240,
+        mode: "callback",
+        swffile: "{{STATIC_URL}}swf/jscam_canvas_only.swf",
+/*
+        onTick: function() {},
+        onSave: function() {},
+        onCapture: function() {},
+        debug: function() {},
+        onLoad: function() {}
+*/
+});
+});
+</script>
