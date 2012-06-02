@@ -1,31 +1,49 @@
 {% extends "base.html" %}
 
+
+
+
+
 {%block form%}
-<h1>Upload a Photo</h1>
+
+<h1>Step 1: Take a Photo</h1>
+
+<div id="camera"></div>
+
+<h2>Upload Stuff</h2>
 <form action="" method="POST" enctype="multipart/form-data">
 	{% csrf_token %}
-	{{form.as_p}}
+	{{form.as_p}}<a href="/webcam">Take a screenshot</a>
 	<input type="submit" value="Send" />
 </form>
+<div>
 
+</div><br/>
+<form>
+	<input type=button value="Configure..." onClick="webcam.configure()">
+	&nbsp;&nbsp;&nbsp;
+	<input type=button value="Take Snapshot" onClick="webcam.snap()">
+</form>
 
 {%endblock%}
 
 
+{%block extra_script%}
 <script type="text/javascript">
 $("document").ready(function() {
-$("#camera").webcam({
-        width: 320,
-        height: 240,
-        mode: "callback",
-        swffile: "{{STATIC_URL}}swf/jscam_canvas_only.swf",
-/*
-        onTick: function() {},
-        onSave: function() {},
-        onCapture: function() {},
-        debug: function() {},
-        onLoad: function() {}
-*/
-});
+	$("#camera").webcam({
+	        width: 320,
+	        height: 240,
+	        mode: "callback",
+	        swffile: "{{STATIC_URL}}js/jscam.swf",
+	        onTick: function() {},
+	        onSave: function() {},
+	        onCapture: function() {},
+	        debug: function() {},
+	        onLoad: function() {}
+	});
 });
 </script>
+{%endblock%}
+
+
