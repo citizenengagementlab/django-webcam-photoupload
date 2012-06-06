@@ -1,0 +1,32 @@
+<mockup version="1.0" skin="sketch" measuredW="1553" measuredH="817" mockupW="1140" mockupH="800">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="413" y="17" w="1140" h="800" measuredW="450" measuredH="400" zOrder="0" locked="true" isInGroup="-1"/>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::Title" x="521" y="252" w="-1" h="-1" measuredW="325" measuredH="33" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>24</size>
+        <text>Step%202%20-%20Share%20Your%20Message</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::Button" x="565" y="498" w="276" h="106" measuredW="119" measuredH="42" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>32</size>
+        <text>Upload</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="__group__" x="575" y="604" w="256" h="88" measuredW="256" measuredH="88" zOrder="3" locked="false" isInGroup="-1">
+      <groupChildrenDescriptors>
+        <control controlID="0" controlTypeID="com.balsamiq.mockups::Paragraph" x="0" y="2" w="254" h="86" measuredW="200" measuredH="80" zOrder="0" locked="false" isInGroup="4">
+          <controlProperties>
+            <text>By%20clicking%2C%20I%20agree%20to%20the%20</text>
+          </controlProperties>
+        </control>
+        <control controlID="1" controlTypeID="com.balsamiq.mockups::Link" x="151" y="0" w="-1" h="-1" measuredW="105" measuredH="21" zOrder="1" locked="false" isInGroup="4">
+          <controlProperties>
+            <text>terms%20of%20service.</text>
+          </controlProperties>
+        </control>
+      </groupChildrenDescriptors>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Image" x="938" y="252" w="500" h="375" measuredW="77" measuredH="79" zOrder="4" locked="false" isInGroup="-1"/>
+  </controls>
+</mockup>

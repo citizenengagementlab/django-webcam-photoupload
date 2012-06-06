@@ -1,0 +1,69 @@
+body {
+  width: 100%;
+  background-color: #DDD;
+}
+#photo {
+  clear: both;
+}
+#flash {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 5000;
+  width: 100%;
+  height: 100%;
+  background-color: #c00;
+  display: none;
+}
+object {
+  display: block;
+  /* HTML5 fix */
+
+  position: relative;
+  z-index: 1000;
+}
+#step-1 .left-section {
+  width: 20%;
+  background-color: #CCC;
+  float: left;
+}
+#step-1 .right-section {
+  width: 80%;
+  background-color: #333;
+}
+#step-1 .right-section #camera {
+  width: 500px;
+  height: 375px;
+  border: 20px solid #333;
+  background: #eee;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  float: left;
+  margin-right: 20px;
+}
+#step-2 {
+  display: none;
+}
+#step-2 .left-section {
+  background-color: #CCC;
+  width: 20%;
+}
+#step-2 .left-section h1 {
+  display: inline;
+}
+#step-2 .right-section {
+  width: 80%;
+  background-color: #333;
+}
+#step-2 .right-section #canvas {
+  width: 500px;
+  height: 375px;
+  border: 20px solid #333;
+  background: #eee;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  float: left;
+  margin-right: 20px;
+}

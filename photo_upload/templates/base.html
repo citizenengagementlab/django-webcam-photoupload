@@ -6,23 +6,13 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<link rel="Shortcut Icon" href="favicon.ico">
 	<title>Upload</title>
-	<meta name="description" content="">
-	<meta name="author" content="">
+
 
 	
+<!--[if IE]><script src="/static/excanvas.js"></script><![endif]-->
 	
 	<link rel="stylesheet" href="{{STATIC_URL}}css/style.css">
-	{%block fb_meta %}
-	<meta property="og:title" content="" />
-	<meta property="og:description" content="" />
-	<meta property="og:image" content="" />
-	{%endblock%}
-	<meta property="og:site_name" content="" />
-	<meta property="og:type" content="" />
-
-  
 	{%block extra_head%}{%endblock%}
 </head>
 
@@ -36,8 +26,22 @@
 <!--[if lt IE 9]>
 <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js">var IE7_PNG_SUFFIX =  ".png";</script>
 <![endif]-->
-{%block extra_script%}{%endblock%}
-<script src="{{STATIC_URL}}js/script.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.webcam.js"></script>
+<script src="{{STATIC_URL}}js/script.js"></script>
+{%block extra_script%}
+
+
+<script type="text/javascript">
+
+
+
+
+
+
+
+
+</script>
+
+{%endblock%}
 </body>
 </html>
