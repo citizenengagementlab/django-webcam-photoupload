@@ -1,34 +1,35 @@
 {% extends "base.html" %}
 
-{%block form%}
+{%block content%}
 
-
-<div id="step-1">
-	<section class="left-section">
-		<h1>Step 1: Take a Photo</h1>
-		<input id="snap_button" type="button" value="Say Cheese!" onclick="webcam.capture()" />
-	</section>
-	<section class="right-section">
-		<div id="camera"></div>
-	</section>
-</div>
-
-<div id ="step-2">
-	<section class="left-section">
-		<h1>Step 2:  Share Your Message</h1>	
-		<form action="" method="POST" enctype="multipart/form-data">
-			{% csrf_token %}
-			{{form.as_p}}	
-			<a href="#" onclick="addToCanvas()">Add some text to the canvas!</a>
-			<input type="submit" value="Send" />
-		</form>	
-	</section>
-	<section class="right-section">
-		<canvas id="canvas" height="240" width="320"></canvas>
-	</section>
-</div>
-
+<div id="upload">
+	<article id="step-1">
+		<section class="left-section">
+			<h1>Step 1: Take a Photo</h1>
+			<button id="snap_button" onclick="webcam.capture()">Say Cheese</button>
+			<p>No webcam?  Go straight to our <a href="/upload/"> upload form.</a></p>
+		</section>
+		<section class="right-section">
+			<div id="camera"></div>
+		
+		</section>
+	</article>
 	
+	<article id ="step-2">
+		<section class="left-section">
+			<h1>Step 2:  Share Your Message</h1>	
+			<form action="" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				{{form.as_p}}	
+				<a href="#" onclick="addToCanvas()">Add some text to the canvas!</a>
+				<input type="submit" value="Send" />
+			</form>	
+		</section>
+		<section class="right-section">
+			<canvas id="canvas" height="375" width="500"></canvas>
+		</section>
+	</article>
+</div>
 
 {%endblock%}
 
@@ -166,22 +167,22 @@ jQuery("#camera").webcam({
 
 		ctx.fillStyle="#000";
 		ctx.globalAlpha=0.5;
-		ctx.fillRect(0,0,640,50);
+		ctx.fillRect(0,0,500,50);
 		
-		ctx.fillStyle="#DDD";
+		ctx.fillStyle="#000";
 		ctx.globalAlpha=0.5;
-		ctx.fillRect(0,430,640,50);
+		ctx.fillRect(0,160,500,80);
 	},
 
 	onCapture: function () {
-		webcam.save();
-
 		jQuery("#flash").css("display", "block");
 		jQuery("#flash").fadeOut(100, function () {
-			jQuery("#flash").css("opacity", 1);
-			
-		$("div#step-1").hide();
-		$("div#step-2").show();
+		jQuery("#flash").css("opacity", 1);
+		webcam.save();
+		$("article#step-1").hide();
+		$("article#step-2").show();
+		
+		
 		});
 	},
 
@@ -248,9 +249,10 @@ function getPageSize() {
 }
 
 window.addEventListener("load", function() {
-
-	jQuery("body").append("<div id=\"flash\"></div>");
-
+	if("#upload".length > 0) {
+		$("body").append("<div id=\"flash\"></div>");
+	};
+	
 	var canvas = document.getElementById("canvas");
 
 	if (canvas.getContext) {
@@ -266,7 +268,7 @@ window.addEventListener("load", function() {
 	}
 	
 	var pageSize = getPageSize();
-	jQuery("#flash").css({ height: pageSize[1] + "px" });
+	$("#flash").css({ height: pageSize[1] + "px" });
 
 }, false);
 
@@ -277,17 +279,61 @@ window.addEventListener("resize", function() {
 
 }, false);
 
+function wrapText(ctx,text,x,y,lineHeight,maxWidth) {
+  	maxWidth = maxWidth || 0;
+  	
+  	if (maxWidth <= 0) {
+        ctx.fillText(text,x,y);
+        return;
+    }
+    var words = text.split(' ');
+    var currentLine = 0;
+    var idx = 1;
+    while (words.length > 0 && idx <= words.length) {
+        var str = words.slice(0,idx).join(' ');
+        var w = ctx.measureText(str).width;
+        if ( w > maxWidth ) {
+            if (idx==1)
+            {
+                idx=2;
+            }
+            ctx.fillText(words.slice(0,idx-1).join(' '), x, y + (lineHeight*currentLine));
+            currentLine++;
+            words = words.splice(idx-1);
+            idx = 1;
+        }
+        else {
+        	idx++;
+        }
+    }
+    if(idx > 0)
+        ctx.fillText( words.join(' '), x, y + (lineHeight*currentLine) );
+}
 
-$("document").ready(function() {
 
-		
+	$("#id_name").change(function() {
+	ctx.fillStyle = "#FFF";
+	ctx.font = "12px Helvetica";
+	ctx.globalAlpha=1;
+	ctx.fillText(this.value,20,20);
+	});
 
+$("#id_zip_code").change(function() {
+	ctx.fillStyle = "#FFF";
+	ctx.font = "12px Helvetica";
+	ctx.globalAlpha=1;
+	ctx.fillText(this.value,20,40);
+});
+
+$("#id_message").change(function() {
+	ctx.fillStyle = "#FFF";
+	ctx.font = "10px Helvetica";
+	ctx.globalAlpha=1;
+	var text = this.value;
+	wrapText(ctx,text,20,180,16,200);
 });
 
 </script>
-
-
-
 {%endblock%}
 
 

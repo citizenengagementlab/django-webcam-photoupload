@@ -1,23 +1,15 @@
-<!doctype html>
-<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<!DOCTYPE html>
+<html>
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title>Upload</title>
-
-
-	
-<!--[if IE]><script src="/static/excanvas.js"></script><![endif]-->
-	
-	<link rel="stylesheet" href="{{STATIC_URL}}css/style.css">
+	<link rel="stylesheet" href="{{STATIC_URL}}css/style.css" />
 	{%block extra_head%}{%endblock%}
 </head>
 
-	{%block form%}{%endblock%}
+<body>
+	<div id="wrapper">
 	
+	{%block form%}{%endblock%}
 	{%block content%}{%endblock%}
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
@@ -29,19 +21,8 @@
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.webcam.js"></script>
 <script src="{{STATIC_URL}}js/script.js"></script>
 {%block extra_script%}
-
-
-<script type="text/javascript">
-
-
-
-
-
-
-
-
-</script>
-
+<!--[if IE]><script src="/static/excanvas.js"></script><![endif]-->
 {%endblock%}
+	</div>
 </body>
 </html>

@@ -1,11 +1,101 @@
+.camera-box() {
+	width: 500px;
+	height:375px;
+	border:20px solid #333;
+	background:#eee;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+}
+
+
+
 body {
 	width:100%;
 	background-color:#DDD;
+	#wrapper {
+		width:80%;
+		margin: 0 auto;
+		#upload {
+			margin-top:100px;
+			#step-1 {
+				.left-section {
+					width:50%;
+					background-color:#EEE;
+					float:left;
+					height: 551px;
+					h1 {
+						font-size:40px;
+						margin-left:20px;
+					}
+					button {
+						width:250px;
+						height:70px;
+						border-radius:10px;
+						font-size:24px;
+						text-align:center;
+						display:block;
+						margin:0 auto;
+					}
+					p {
+						text-align:center;
+					}
+				}
+				.right-section {
+					width:40%;
+					padding:5%;
+					float:right;
+					background-color:#EEE;
+					#camera {
+						.camera-box();
+					}
+				}
+			}
+			
+			
+			#step-2 {
+				display:none;
+				.left-section {
+					background-color:#EEE;
+					width:50%;
+					float:left;
+					height:551px;
+					h1 {
+						font-size:40px;
+						margin-left:20px;
+					}
+					form {
+						margin:0 auto;
+						display:block;
+						width:41%;
+						label {
+							display:block;
+							font-weight:bold;
+							text-transform:uppercase;
+						}
+						input[type="text"] {
+							width:80%;
+						}
+					}
+				}
+				.right-section {
+					width:40.1%;
+					padding:5%;
+					float:right;
+					background-color:#EEE;
+					#canvas {
+						.camera-box();
+					}
+					form {
+						margin:0 auto;
+						display:block;
+					}
+				}
+			}
+		}
+	}
 }
 
-#photo {
-	clear:both;
-}
 
 #flash {
 	position:absolute;
@@ -18,60 +108,3 @@ body {
 	display:none;
 }
 
-object {
-	display:block; /* HTML5 fix */
-	position:relative;
-	z-index:1000;
-}
-
-.camera() {
-	width: 500px;
-	height:375px;
-	border:20px solid #333;
-	background:#eee;
-	-webkit-border-radius: 20px;
-	-moz-border-radius: 20px;
-	border-radius: 20px;
-	float:left;
-	margin-right: 20px;
-}
-
-
-#step-1 {
-	.left-section {
-		width:20%;
-		background-color:#CCC;
-		float:left;
-		h1 {}
-		input {}
-	}
-	.right-section {
-		width:80%;
-		background-color:#333;
-		#camera {
-			.camera();
-		}
-	}
-}
-
-
-#step-2 {
-	display:none;
-	.left-section {
-		background-color:#CCC;
-		width:20%;
-		h1 {
-			display:inline;
-		}
-		form {
-			
-		}
-	}
-	.right-section {
-		width:80%;
-		background-color:#333;
-		#canvas {
-			.camera();
-		}
-	}
-}
