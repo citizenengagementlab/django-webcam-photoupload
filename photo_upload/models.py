@@ -10,5 +10,5 @@ class Photo(models.Model):
 	approved = models.BooleanField()
 	
 	def __unicode__(self):
-		return "%s, %s: %s" % (self.name, self.zip_code, self.email)
+		return "%s, %s, %s, %s, %s" % (self.name, self.zip_code, self.email, self.message, self.photo)
 		

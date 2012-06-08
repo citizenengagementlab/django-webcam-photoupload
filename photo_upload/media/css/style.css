@@ -101,3 +101,6 @@ body #wrapper #upload #step-2 .right-section form {
   background-color: #c00;
   display: none;
 }
+li.nophoto {
+  display: none;
+}

@@ -7,7 +7,7 @@
 		<section class="left-section">
 			<h1>Step 1: Take a Photo</h1>
 			<button id="snap_button" onclick="webcam.capture()">Say Cheese</button>
-			<p>No webcam?  Go straight to our <a href="/upload/"> upload form.</a></p>
+			<p>No webcam?  Go straight to our <a href="#show_photo" id="show_photo"> upload form.</a></p>
 		</section>
 		<section class="right-section">
 			<div id="camera"></div>
@@ -20,8 +20,13 @@
 			<h1>Step 2:  Share Your Message</h1>	
 			<form action="" method="POST" enctype="multipart/form-data">
 				{% csrf_token %}
-				{{form.as_p}}	
-				<a href="#" onclick="addToCanvas()">Add some text to the canvas!</a>
+				<ul>
+					<li><label for="id_name">Name:</label> <input id="id_name" type="text" name="name" maxlength="50" /></li>
+					<li><label for="id_zip_code">Zip code:</label> <input id="id_zip_code" type="text" name="zip_code" maxlength="5" /></li>
+					<li><label for="id_email">Email:</label> <input id="id_email" type="text" name="email" maxlength="75" /></li>
+					<li><label for="id_message">Message:</label> <textarea id="id_message" rows="10" cols="40" name="message"></textarea></li>
+					<li class="nophoto"><label for="id_photo">Photo:</label> <input type="file" name="photo" id="id_photo" /></li>	
+				</ul>
 				<input type="submit" value="Send" />
 			</form>	
 		</section>
@@ -82,7 +87,7 @@ jQuery("#camera").webcam({
 
 		if (false == filter_on) {
 
-			for(var i = 0; i < 320; i++) {
+			for(var i = 0; i < 500; i++) {
 				var tmp = parseInt(col[i]);
 				img.data[pos + 0] = (tmp >> 16) & 0xff;
 				img.data[pos + 1] = (tmp >> 8) & 0xff;
@@ -93,13 +98,9 @@ jQuery("#camera").webcam({
 
 		} else {
 
-			var id = filter_id;
-			var r,g,b;
-			var r1 = Math.floor(Math.random() * 255);
-			var r2 = Math.floor(Math.random() * 255);
-			var r3 = Math.floor(Math.random() * 255);
+	
 
-			for(var i = 0; i < 320; i++) {
+			for(var i = 0; i < 500; i++) {
 				var tmp = parseInt(col[i]);
 
 				/* Copied some xcolor methods here to be faster than calling all methods inside of xcolor and to not serve complete library with every req */
@@ -166,12 +167,12 @@ jQuery("#camera").webcam({
 		}
 
 		ctx.fillStyle="#000";
-		ctx.globalAlpha=0.5;
+		ctx.globalAlpha=0.3;
 		ctx.fillRect(0,0,500,50);
 		
 		ctx.fillStyle="#000";
-		ctx.globalAlpha=0.5;
-		ctx.fillRect(0,160,500,80);
+		ctx.globalAlpha=0.3;
+		ctx.fillRect(0,295,500,80);
 	},
 
 	onCapture: function () {
@@ -257,14 +258,8 @@ window.addEventListener("load", function() {
 
 	if (canvas.getContext) {
 		ctx = document.getElementById("canvas").getContext("2d");
-		ctx.clearRect(0, 0, 320, 240);
-
-		var img = new Image();
-		img.src = "/static/logo.gif";
-		img.onload = function() {
-			ctx.drawImage(img, 129, 89);
-		}
-		image = ctx.getImageData(0, 0, 320, 240);
+		ctx.clearRect(0, 0, 500, 375);
+		image = ctx.getImageData(0, 0, 500, 375);
 	}
 	
 	var pageSize = getPageSize();
@@ -333,6 +328,13 @@ $("#id_message").change(function() {
 	wrapText(ctx,text,20,180,16,200);
 });
 
+$("#show_photo").click(function() {
+	if(document.location.hash === "#show_photo") {
+		$(".nophoto").show();
+		$("article#step-1").hide();
+		$("article#step-2").show();
+	}
+});
 </script>
 {%endblock%}
 

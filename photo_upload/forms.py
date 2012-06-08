@@ -6,4 +6,5 @@ class PhotoForm(ModelForm):
 	class Meta:
 		model = Photo
 		exclude = {'approved',}
-	
+		
+		
