@@ -10,7 +10,7 @@ body #wrapper #upload {
   margin-top: 100px;
 }
 body #wrapper #upload #step-1 .left-section {
-  width: 50%;
+  width: 40%;
   background-color: #EEE;
   float: left;
   height: 551px;
@@ -32,14 +32,14 @@ body #wrapper #upload #step-1 .left-section p {
   text-align: center;
 }
 body #wrapper #upload #step-1 .right-section {
-  width: 40%;
+  width: 50%;
   padding: 5%;
   float: right;
   background-color: #EEE;
 }
 body #wrapper #upload #step-1 .right-section #camera {
-  width: 500px;
-  height: 375px;
+  width: 640px;
+  height: 480px;
   border: 20px solid #333;
   background: #eee;
   -webkit-border-radius: 20px;
@@ -51,7 +51,7 @@ body #wrapper #upload #step-2 {
 }
 body #wrapper #upload #step-2 .left-section {
   background-color: #EEE;
-  width: 50%;
+  width: 40%;
   float: left;
   height: 551px;
 }
@@ -73,14 +73,14 @@ body #wrapper #upload #step-2 .left-section form input[type="text"] {
   width: 80%;
 }
 body #wrapper #upload #step-2 .right-section {
-  width: 40.1%;
+  width: 50%;
   padding: 5%;
   float: right;
   background-color: #EEE;
 }
 body #wrapper #upload #step-2 .right-section #canvas {
-  width: 500px;
-  height: 375px;
+  width: 640px;
+  height: 480px;
   border: 20px solid #333;
   background: #eee;
   -webkit-border-radius: 20px;
@@ -101,6 +101,6 @@ body #wrapper #upload #step-2 .right-section form {
   background-color: #c00;
   display: none;
 }
-li.nophoto {
+div.nophoto {
   display: none;
 }

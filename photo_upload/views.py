@@ -18,6 +18,11 @@ def upload(request):
 	context = {
 		"form": PhotoForm(),
 	}
+	if request.is_ajax():
+		if request.method == 'POST':
+			print "cool"
+		else:
+			print "no"
 	if request.method == 'POST':
 		form = PhotoForm(request.POST, request.FILES)
 		if form.is_valid():

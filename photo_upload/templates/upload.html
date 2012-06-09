@@ -20,18 +20,39 @@
 			<h1>Step 2:  Share Your Message</h1>	
 			<form action="" method="POST" enctype="multipart/form-data">
 				{% csrf_token %}
-				<ul>
-					<li><label for="id_name">Name:</label> <input id="id_name" type="text" name="name" maxlength="50" /></li>
-					<li><label for="id_zip_code">Zip code:</label> <input id="id_zip_code" type="text" name="zip_code" maxlength="5" /></li>
-					<li><label for="id_email">Email:</label> <input id="id_email" type="text" name="email" maxlength="75" /></li>
-					<li><label for="id_message">Message:</label> <textarea id="id_message" rows="10" cols="40" name="message"></textarea></li>
-					<li class="nophoto"><label for="id_photo">Photo:</label> <input type="file" name="photo" id="id_photo" /></li>	
-				</ul>
-				<input type="submit" value="Send" />
+				{{ form.non_field_errors }}
+				<div class="fieldWrapper">
+					{{ form.name.errors }}
+					<label for="id_name">Your Name</label>
+					{{ form.name }}
+				</div>
+			    <div class="fieldWrapper">
+			        {{ form.zip_code.errors }}
+			        <label for="id_zip_code">Your zip code</label>
+			        {{ form.zip_code}}
+			    </div>
+			    <div class="fieldWrapper">
+			        {{ form.message.errors }}
+			        <label for="id_message">Your message:</label>
+			        {{ form.message}}
+			    </div>
+			    <div class="fieldWrapper">
+			        {{ form.email.errors }}
+			        <label for="id_email">Your email</label>
+			        {{ form.email}}
+			    </div>	
+			    <div class="nophoto">
+				    <div class="fieldWrapper">
+				        {{ form.photo.errors }}
+				        <label for="id_photo">Upload a photo</label>
+				        {{ form.photo}}
+				    </div>		
+			    </div>						
+				<input id="sendForm" type="submit" value="Send" />
 			</form>	
 		</section>
 		<section class="right-section">
-			<canvas id="canvas" height="375" width="500"></canvas>
+			<canvas id="canvas" height="480" width="640"></canvas>
 		</section>
 	</article>
 </div>
@@ -42,34 +63,64 @@
 
 <script type="text/javascript">
 
+
 var pos = 0;
 var ctx = null;
 var cam = null;
-var image = null;
+var image = [];
+var saveCB;
+var dataURL;
+		
+var canvas = document.getElementById("canvas");
 
-var filter_on = false;
-var filter_id = 0;
 
-function changeFilter() {
-	if (filter_on) {
-		filter_id = (filter_id + 1) & 7;
+if (canvas.toDataURL) {
+	ctx = canvas.getContext("2d");
+	image = ctx.getImageData(0,0,640,480);
+	saveCB = function(data) {
+	
+	var col = data.split(";");
+	var img = image;
+
+
+	for(var i = 0; i < 640; i++) {
+		var tmp = parseInt(col[i]);
+		img.data[pos + 0] = (tmp >> 16) & 0xff;
+		img.data[pos + 1] = (tmp >> 8) & 0xff;
+		img.data[pos + 2] = tmp & 0xff;
+		img.data[pos + 3] = 0xff;
+		pos+= 4;
+	};
+
+    ctx.putImageData(img, 0, 0);	
+
+	ctx.fillStyle="#000";
+	ctx.fillRect(0,0,640,50);
+	ctx.globalAlpha=0.3;
+	
+	ctx.fillStyle="#000";
+	ctx.fillRect(0,325,640,155);
+	ctx.globalAlpha=0.3;
+
+	}
+} else {
+	saveCB = function(data) {
+		image.push(data);
+		
+		pos+= 4 * 640
+		
+		if(pos >= 4 * 640 * 480) {
+			return true;
+		}
 	}
 }
 
-function toggleFilter(obj) {
-	if (filter_on =!filter_on) {
-		obj.parentNode.style.borderColor = "#c00";
-	} else {
-		obj.parentNode.style.borderColor = "#333";
-	}
-}
+$("#camera").webcam({
 
-jQuery("#camera").webcam({
-
-	width: 500,
-	height: 375,
+	width: 640,
+	height: 480,
 	mode: "callback",
-	swffile: "{{STATIC_URL}}js/jscam_canvas_only.swf",
+	swffile: "{{STATIC_URL}}js/jscam.swf",
 
 	onTick: function(remain) {
 
@@ -80,110 +131,21 @@ jQuery("#camera").webcam({
 		}
 	},
 
-	onSave: function(data) {
-
-		var col = data.split(";");
-		var img = image;
-
-		if (false == filter_on) {
-
-			for(var i = 0; i < 500; i++) {
-				var tmp = parseInt(col[i]);
-				img.data[pos + 0] = (tmp >> 16) & 0xff;
-				img.data[pos + 1] = (tmp >> 8) & 0xff;
-				img.data[pos + 2] = tmp & 0xff;
-				img.data[pos + 3] = 0xff;
-				pos+= 4;
-			}
-
-		} else {
-
-	
-
-			for(var i = 0; i < 500; i++) {
-				var tmp = parseInt(col[i]);
-
-				/* Copied some xcolor methods here to be faster than calling all methods inside of xcolor and to not serve complete library with every req */
-
-				if (id == 0) {
-					r = (tmp >> 16) & 0xff;
-					g = 0xff;
-					b = 0xff;
-				} else if (id == 1) {
-					r = 0xff;
-					g = (tmp >> 8) & 0xff;
-					b = 0xff;
-				} else if (id == 2) {
-					r = 0xff;
-					g = 0xff;
-					b = tmp & 0xff;
-				} else if (id == 3) {
-					r = 0xff ^ ((tmp >> 16) & 0xff);
-					g = 0xff ^ ((tmp >> 8) & 0xff);
-					b = 0xff ^ (tmp & 0xff);
-				} else if (id == 4) {
-
-					r = (tmp >> 16) & 0xff;
-					g = (tmp >> 8) & 0xff;
-					b = tmp & 0xff;
-					var v = Math.min(Math.floor(.35 + 13 * (r + g + b) / 60), 255);
-					r = v;
-					g = v;
-					b = v;
-				} else if (id == 5) {
-					r = (tmp >> 16) & 0xff;
-					g = (tmp >> 8) & 0xff;
-					b = tmp & 0xff;
-					if ((r+= 32) < 0) r = 0;
-					if ((g+= 32) < 0) g = 0;
-					if ((b+= 32) < 0) b = 0;
-				} else if (id == 6) {
-					r = (tmp >> 16) & 0xff;
-					g = (tmp >> 8) & 0xff;
-					b = tmp & 0xff;
-					if ((r-= 32) < 0) r = 0;
-					if ((g-= 32) < 0) g = 0;
-					if ((b-= 32) < 0) b = 0;
-				} else if (id == 7) {
-					r = (tmp >> 16) & 0xff;
-					g = (tmp >> 8) & 0xff;
-					b = tmp & 0xff;
-					r = Math.floor(r / 255 * r1);
-					g = Math.floor(g / 255 * r2);
-					b = Math.floor(b / 255 * r3);
-				}
-
-				img.data[pos + 0] = r;
-				img.data[pos + 1] = g;
-				img.data[pos + 2] = b;
-				img.data[pos + 3] = 0xff;
-				pos+= 4;
-			}
-		}
-
-		if (pos >= 0x4B000) {
-			ctx.putImageData(img, 0, 0);
-			pos = 0;
-		}
-
-		ctx.fillStyle="#000";
-		ctx.globalAlpha=0.3;
-		ctx.fillRect(0,0,500,50);
-		
-		ctx.fillStyle="#000";
-		ctx.globalAlpha=0.3;
-		ctx.fillRect(0,295,500,80);
-	},
+	onSave: saveCB,
 
 	onCapture: function () {
+		webcam.save();
+
+		
+	     	                
 		jQuery("#flash").css("display", "block");
 		jQuery("#flash").fadeOut(100, function () {
 		jQuery("#flash").css("opacity", 1);
-		webcam.save();
+		
 		$("article#step-1").hide();
 		$("article#step-2").show();
 		
-		
+		ImageToServer();
 		});
 	},
 
@@ -200,6 +162,7 @@ jQuery("#camera").webcam({
 	}
 });
 
+//I think this is literally just being used for the flash effect...
 function getPageSize() {
 
 	var xScroll, yScroll;
@@ -249,19 +212,13 @@ function getPageSize() {
 	return [pageWidth, pageHeight];
 }
 
+//Setting up flash, canvas
 window.addEventListener("load", function() {
 	if("#upload".length > 0) {
 		$("body").append("<div id=\"flash\"></div>");
 	};
 	
-	var canvas = document.getElementById("canvas");
-
-	if (canvas.getContext) {
-		ctx = document.getElementById("canvas").getContext("2d");
-		ctx.clearRect(0, 0, 500, 375);
-		image = ctx.getImageData(0, 0, 500, 375);
-	}
-	
+		
 	var pageSize = getPageSize();
 	$("#flash").css({ height: pageSize[1] + "px" });
 
@@ -274,6 +231,7 @@ window.addEventListener("resize", function() {
 
 }, false);
 
+//Wraps text on canvas
 function wrapText(ctx,text,x,y,lineHeight,maxWidth) {
   	maxWidth = maxWidth || 0;
   	
@@ -305,12 +263,24 @@ function wrapText(ctx,text,x,y,lineHeight,maxWidth) {
         ctx.fillText( words.join(' '), x, y + (lineHeight*currentLine) );
 }
 
+function redrawImage() {
 
+	//TODO:  Make function that paints everything that is on the canvas EXCEPT for the thing that is to be edited.  
+	//To do this, we'll need to have the image and the overlays saved immediately so that they can be redrawn anytime we make an edit.  
+	//I think we essentially just want to figure out a way to save after each edit so that we can "rollback."
+		
+}
+
+
+
+//Draw stuff from form to canvas
 	$("#id_name").change(function() {
+	redrawImage();
 	ctx.fillStyle = "#FFF";
-	ctx.font = "12px Helvetica";
+	ctx.font = "bold 20px Helvetica";
 	ctx.globalAlpha=1;
 	ctx.fillText(this.value,20,20);
+	ImageToServer();
 	});
 
 $("#id_zip_code").change(function() {
@@ -318,23 +288,36 @@ $("#id_zip_code").change(function() {
 	ctx.font = "12px Helvetica";
 	ctx.globalAlpha=1;
 	ctx.fillText(this.value,20,40);
+	ImageToServer();
 });
 
 $("#id_message").change(function() {
 	ctx.fillStyle = "#FFF";
-	ctx.font = "10px Helvetica";
+	ctx.font = "14px Helvetica";
 	ctx.globalAlpha=1;
 	var text = this.value;
-	wrapText(ctx,text,20,180,16,200);
+	wrapText(ctx,text,20,350,16,610);
+	ImageToServer();
 });
 
+//Hide Photo Upload if you click webcam, show if you go to upload form
 $("#show_photo").click(function() {
+	document.location.hash = "#show_photo";
 	if(document.location.hash === "#show_photo") {
-		$(".nophoto").show();
+		$("div.nophoto").removeClass("nophoto");
 		$("article#step-1").hide();
 		$("article#step-2").show();
 	}
 });
+
+
+function ImageToServer() {
+	var dataURL = canvas.toDataURL();
+	$.post()
+	
+	
+};
+
 </script>
 {%endblock%}
 

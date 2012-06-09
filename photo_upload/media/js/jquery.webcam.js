@@ -23,7 +23,7 @@
 	mode: "callback", // callback | save | stream
 
 	swffile: "jscam.swf",
-	quality: 100,
+	quality: 85,
 
 	debug:	    function () {},
 	onCapture:  function () {},
