@@ -17,8 +17,10 @@
 	extern: null, // external select token to support jQuery dialogs
 	append: true, // append object instead of overwriting
 
-	width: 320,
-	height: 240,
+	width: 640,
+	height: 480,
+	objectWidth: 640,
+	objectHeight: 480,	
 
 	mode: "callback", // callback | save | stream
 
@@ -44,7 +46,7 @@
 	    }
 	}
 
-	var source = '<object id="XwebcamXobjectX" type="application/x-shockwave-flash" data="'+webcam.swffile+'" width="'+webcam.width+'" height="'+webcam.height+'"><param name="movie" value="'+webcam.swffile+'" /><param name="FlashVars" value="mode='+webcam.mode+'&amp;quality='+webcam.quality+'" /><param name="allowScriptAccess" value="always" /></object>';
+	var source = '<object id="XwebcamXobjectX" type="application/x-shockwave-flash" data="'+webcam.swffile+'" width="'+webcam.objectWidth+'" height="'+webcam.objectHeight+'"><param name="movie" value="'+webcam.swffile+'" /><param name="wmode" value="opaque" /><param name="FlashVars" value="mode='+webcam.mode+'&amp;quality='+webcam.quality+'" /></object>';
 
 	if (null !== webcam.extern) {
 	    $(webcam.extern)[webcam.append ? "append" : "html"](source);
