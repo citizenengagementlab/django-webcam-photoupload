@@ -8,8 +8,7 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += patterns('photo_upload.views',
-    (r'^$', 'home'),
-    (r'^upload', 'upload'),
-    (r'^webcam', 'webcam')
+    (r'^$', 'index'),
+    (r'^save_raw_image', 'save_raw_image')
 
 )

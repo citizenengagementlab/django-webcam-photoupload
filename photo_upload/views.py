@@ -1,21 +1,15 @@
 from django.shortcuts import render_to_response
-from django.views.decorators.csrf import csrf_exempt
 from django.template import RequestContext
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.base import ContentFile
+from django.http import HttpRequest, HttpResponse
+from django.contrib.sites.models import Site
+
 from photo_upload.models import *
+
 from photo_upload.forms import PhotoForm
-
-
-def home(request):
-	photos = Photo.objects.filter(approved=True)
-	name = Photo.objects.filter(approved=True)
-	context = {
-		"photos": photos,
-		"name": name,
-	}
-	return render_to_response("home.html",context,context_instance=RequestContext(request))
 	
-	
-def upload(request):
+def index(request):
 	context = {
 		"form": PhotoForm(),
 	}
@@ -26,23 +20,20 @@ def upload(request):
 		else:
 			context['form'] = form
 			print form.errors
-	return render_to_response("upload.html",context,context_instance=RequestContext(request))
+	return render_to_response("index.html",context,context_instance=RequestContext(request))
 	
-def webcam(request):
+@csrf_exempt
+def save_raw_image(request):
 	context = {}
-	if request.is_ajax():
-		if request.method == 'POST':
-			form_photo = PhotoForm(request.FILES)
-			if form_photo.is_valid():
-				new_photo_upload = form_photo.save()
-			else:
-				context['form_photo'] = form_photo
-				print form.errors
-			print "received"
-		else:
-			print "failed"
-	return render_to_response("upload.html",context,context_instance=RequestContext(request))
-webcam = csrf_exempt(webcam)
+	if request.method == 'POST':
+		print raw_post_data
+		Photo.photo.save("/uploads/",ContentFile(request.raw_post_data)) #trying to save a file to my uploads model in my photo directory.  pretty sure its already a jpeg so i can just save it the request.POST?  raw_post_data didn't work - not sure it is a real thing.
+		print "Cool"
+	else:
+		print "Error"
+	return render_to_response("index.html",context,context_instance=RequestContext(request))
+	
+
 		
 			
 			
