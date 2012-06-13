@@ -2,7 +2,13 @@
 
 
 {%block photo_grid%}
+
 <ul id="photo_grid">
+		<h1>Photo Upload Demo</h1>
+		<li class="captioned_photo first">
+			<h2>What is this?</h2>
+			<p>Almost certainly a photo upload tool.  You could potentially put your cause in this box.  A call to action of sorts.</p>
+		</li>
 	{%for photo in photos%}
 		<li class="captioned_photo"><img src="{{STATIC_URL}}{{photo.captioned_photo}}" /></li>
 	{%endfor%}
@@ -11,7 +17,7 @@
 
 {%block upload_form%}
 <div id="sticky">
-	<div id="tab"></div>
+	<aside id="tab"><h2>Upload +</h2></aside>
 	<div id="upload">
 		<article id="step-1">
 			<section class="left-section">
@@ -25,7 +31,6 @@
 		
 		<article id ="step-2">
 			<section class="left-section">
-				<h1>Step 2:  Share Your Message</h1>	
 				<form action="" method="POST" enctype="multipart/form-data">
 					{% csrf_token %}
 					<!-- csrf token ajax for photo, pass to PhotoUpload view -->
@@ -39,11 +44,6 @@
 				        {{ form.zip_code.errors }}
 				        <label for="id_zip_code">Your zip code</label>
 				        {{ form.zip_code}}
-				    </div>
-				    <div class="fieldWrapper">
-				        {{ form.message.errors }}
-				        <label for="id_message">Your message:</label>
-				        {{ form.message}}
 				    </div>
 				    <div class="fieldWrapper">
 				        {{ form.email.errors }}
@@ -61,7 +61,7 @@
 				</form>	
 			</section>
 			<section class="right-section">
-				<canvas id="canvas" height="480" width="640"></canvas>
+				<canvas id="canvas" height="350" width="260"></canvas>
 			</section>
 		</article>
 	</div>
@@ -94,11 +94,15 @@
 
 <script type="text/javascript">
 
+$("document").ready(function() {
+	$("#tab").trigger("click")
+});
+
 $("#tab").click(function() {
 		$("#upload").animate({width: "toggle"});
 	});
 
-$("#camera").html(webcam.get_html(400, 300));
+$("#camera").html(webcam.get_html(350, 260));
 
 
 	

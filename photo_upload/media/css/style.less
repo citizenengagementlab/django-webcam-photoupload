@@ -1,19 +1,32 @@
 /*Mixins*/
 
 .camera-box() {
-	width: 400px;
-	height:300px;
-	border:20px solid #333;
+	width: 350px;
+	height:260px;
+	border:15px solid #333;
 	background:#eee;
 	-webkit-border-radius: 20px;
 	-moz-border-radius: 20px;
 	border-radius: 20px;
 }
 
+.rotate() {
+-webkit-transform: rotate(90deg) translateX(20px); 
+    -moz-transform:    rotate(90deg) translateX(20px);
+    -ms-transform:     rotate(90deg) translateX(20px);
+    -o-transform:      rotate(90deg) translateX(20px); 
+    transform:         rotate(90deg) translateX(20px); 
+    -webkit-transform-origin: 1.8em .5em;
+    -moz-transform-origin:    1.8em .5em;
+    -ms-transform-origin:     1.8em .5em;
+    -o-transform-origin:      1.8em .5em;
+    transform-origin:         1.8em .5em;
+}
+
 
 .sticky() {
 	position: fixed;
-	top: 0;
+	top: 5px;
 	z-index: 1;
 	right: 0px;
 	height: auto;
@@ -22,38 +35,53 @@
 body {
 	width:100%;
 	background-color:#DDD;
+	
 	#wrapper {
-		width:80%;
-		margin: 0 auto;
-		
+		width:95%;
+		margin:0 auto;
 		#sticky {
 			.sticky();
-			#tab {
+			aside#tab {
 					height: 275px;
 					width: 42px;
 					padding: 10px 20px;
 					line-height: 1.25;
-					background: #D00007 no-repeat 93% 50%;
+					background: #2A52BE;
 					color: #B9B8A4;
 					float:left;
+					display: block;
+					position: relative;  
+					overflow: hidden;
+					h2 {
+						.rotate();
+						  font: 36px Georgia, Serif;
+						  font-weight: bold;
+						  padding: .7em;
+						  margin: 55px 0px;
+						  line-height: 1;
+						  position: absolute;
+						  top: 0;
+						  left: 0;
+						  width: 1000%;
+					}
 				}
 			#upload {
 				float:right;
+				background:#FFF;
+				box-shadow: inset 0 0 2px #000;
 				#step-1 {
+					display:block;
 					.left-section {
-						background-color:#EEE;
-						width:40%;
+						width:34%;
 						float:left;
-						height:551px;
-						h1 {
-							font-size:40px;
-							margin-left:20px;
-						}
+						margin-top:115px;
+						
 						button {
-							width:250px;
-							height:70px;
+							
+							width:150px;
+							height:50px;
 							border-radius:10px;
-							font-size:24px;
+							font-size:20px;
 							text-align:center;
 							display:block;
 							margin:0 auto;
@@ -61,56 +89,38 @@ body {
 						p {
 							text-align:center;
 							margin:0;
+							font-size:11px;
 						}
 					}
 					.right-section {
-						width:50%;
-						padding:5%;
+						width:64%;
+						padding:1%;
 						float:right;
-						background-color:#EEE;
+						
 						#camera {
 							.camera-box();
 						}
 					}
 				}
-				
-				
 				#step-2 {
 					display:none;
 					.left-section {
-						background-color:#EEE;
-						width:40%;
+						width:34%;
 						float:left;
-						height:551px;
-						h1 {
-							font-size:40px;
-							margin-left:20px;
-						}
-						form {
-							margin:0 auto;
-							display:block;
-							width:41%;
+						position:relative;
+						left:20px;
+						form {		
 							label {
 								display:block;
-								font-weight:bold;
-								text-transform:uppercase;
-							}
-							input[type="text"] {
-								width:80%;
 							}
 						}
 					}
 					.right-section {
-						width:50%;
-						padding:5%;
+						width:64%;
+						padding:1%;
 						float:right;
-						background-color:#EEE;
 						#canvas {
 							.camera-box();
-						}
-						form {
-							margin:0 auto;
-							display:block;
 						}
 					}
 				}
@@ -129,15 +139,42 @@ div.nophoto {
 	right:0px;
 }
 
+.errorlist {
+	position: relative;
+	right: 22px;
+margin: 5px 0px;
+color: red;
+}
+
 ul#photo_grid {
+	h1 {
+			margin:0px;
+			position:relative;
+			text-align:center;
+		}
+	position:relative;	
 	li.captioned_photo {
-		width:400px;
-		height:300px;
+		width:350px;
+		height:260px;
 		list-style-type: none;
 		display:inline;
+		float:left;
+		margin:5px;
+		&.first {
+		background:#666;
+		color:#BBB;
+		width:350px;
+		height:260px;
+		display:block;
+		box-shadow: 1px 1px 3px black;
+		h2, p {
+			margin-left:20px;
+		}
+		}
 		img {
 			width:inherit;
 			height:inherit;
+			box-shadow: 1px 1px 3px black;
 		}
 	}
 }

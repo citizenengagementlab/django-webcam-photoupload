@@ -4,43 +4,67 @@ body {
   background-color: #DDD;
 }
 body #wrapper {
-  width: 80%;
+  width: 95%;
   margin: 0 auto;
 }
 body #wrapper #sticky {
   position: fixed;
-  top: 0;
+  top: 5px;
   z-index: 1;
   right: 0px;
   height: auto;
 }
-body #wrapper #sticky #tab {
+body #wrapper #sticky aside#tab {
   height: 275px;
   width: 42px;
   padding: 10px 20px;
   line-height: 1.25;
-  background: #d00007 no-repeat 93% 50%;
+  background: #2A52BE;
   color: #B9B8A4;
   float: left;
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+body #wrapper #sticky aside#tab h2 {
+  -webkit-transform: rotate(90deg) translatex(20px);
+  -moz-transform: rotate(90deg) translatex(20px);
+  -ms-transform: rotate(90deg) translatex(20px);
+  -o-transform: rotate(90deg) translatex(20px);
+  transform: rotate(90deg) translatex(20px);
+  -webkit-transform-origin: 1.8em .5em;
+  -moz-transform-origin: 1.8em .5em;
+  -ms-transform-origin: 1.8em .5em;
+  -o-transform-origin: 1.8em .5em;
+  transform-origin: 1.8em .5em;
+  font: 36px Georgia, Serif;
+  font-weight: bold;
+  padding: .7em;
+  margin: 55px 0px;
+  line-height: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1000%;
 }
 body #wrapper #sticky #upload {
   float: right;
+  background: #FFF;
+  box-shadow: inset 0 0 2px #000;
+}
+body #wrapper #sticky #upload #step-1 {
+  display: block;
 }
 body #wrapper #sticky #upload #step-1 .left-section {
-  background-color: #EEE;
-  width: 40%;
+  width: 34%;
   float: left;
-  height: 551px;
-}
-body #wrapper #sticky #upload #step-1 .left-section h1 {
-  font-size: 40px;
-  margin-left: 20px;
+  margin-top: 115px;
 }
 body #wrapper #sticky #upload #step-1 .left-section button {
-  width: 250px;
-  height: 70px;
+  width: 150px;
+  height: 50px;
   border-radius: 10px;
-  font-size: 24px;
+  font-size: 20px;
   text-align: center;
   display: block;
   margin: 0 auto;
@@ -48,17 +72,17 @@ body #wrapper #sticky #upload #step-1 .left-section button {
 body #wrapper #sticky #upload #step-1 .left-section p {
   text-align: center;
   margin: 0;
+  font-size: 11px;
 }
 body #wrapper #sticky #upload #step-1 .right-section {
-  width: 50%;
-  padding: 5%;
+  width: 64%;
+  padding: 1%;
   float: right;
-  background-color: #EEE;
 }
 body #wrapper #sticky #upload #step-1 .right-section #camera {
-  width: 400px;
-  height: 300px;
-  border: 20px solid #333;
+  width: 350px;
+  height: 260px;
+  border: 15px solid #333;
   background: #eee;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
@@ -68,46 +92,27 @@ body #wrapper #sticky #upload #step-2 {
   display: none;
 }
 body #wrapper #sticky #upload #step-2 .left-section {
-  background-color: #EEE;
-  width: 40%;
+  width: 34%;
   float: left;
-  height: 551px;
-}
-body #wrapper #sticky #upload #step-2 .left-section h1 {
-  font-size: 40px;
-  margin-left: 20px;
-}
-body #wrapper #sticky #upload #step-2 .left-section form {
-  margin: 0 auto;
-  display: block;
-  width: 41%;
+  position: relative;
+  left: 20px;
 }
 body #wrapper #sticky #upload #step-2 .left-section form label {
   display: block;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-body #wrapper #sticky #upload #step-2 .left-section form input[type="text"] {
-  width: 80%;
 }
 body #wrapper #sticky #upload #step-2 .right-section {
-  width: 50%;
-  padding: 5%;
+  width: 64%;
+  padding: 1%;
   float: right;
-  background-color: #EEE;
 }
 body #wrapper #sticky #upload #step-2 .right-section #canvas {
-  width: 400px;
-  height: 300px;
-  border: 20px solid #333;
+  width: 350px;
+  height: 260px;
+  border: 15px solid #333;
   background: #eee;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   border-radius: 20px;
-}
-body #wrapper #sticky #upload #step-2 .right-section form {
-  margin: 0 auto;
-  display: block;
 }
 div.nophoto {
   display: none;
@@ -117,13 +122,42 @@ div.nophoto {
   float: none;
   right: 0px;
 }
+.errorlist {
+  position: relative;
+  right: 22px;
+  margin: 5px 0px;
+  color: red;
+}
+ul#photo_grid {
+  position: relative;
+}
+ul#photo_grid h1 {
+  margin: 0px;
+  position: relative;
+  text-align: center;
+}
 ul#photo_grid li.captioned_photo {
-  width: 400px;
-  height: 300px;
+  width: 350px;
+  height: 260px;
   list-style-type: none;
   display: inline;
+  float: left;
+  margin: 5px;
+}
+ul#photo_grid li.captioned_photo.first {
+  background: #666;
+  color: #BBB;
+  width: 350px;
+  height: 260px;
+  display: block;
+  box-shadow: 1px 1px 3px black;
+}
+ul#photo_grid li.captioned_photo.first h2,
+ul#photo_grid li.captioned_photo.first p {
+  margin-left: 20px;
 }
 ul#photo_grid li.captioned_photo img {
   width: inherit;
   height: inherit;
+  box-shadow: 1px 1px 3px black;
 }
