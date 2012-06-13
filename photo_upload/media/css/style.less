@@ -10,6 +10,7 @@
 	border-radius: 20px;
 }
 
+
 .sticky() {
 	position: fixed;
 	top: 0;
@@ -41,7 +42,9 @@ body {
 				#step-1 {
 					.left-section {
 						background-color:#EEE;
+						width:40%;
 						float:left;
+						height:551px;
 						h1 {
 							font-size:40px;
 							margin-left:20px;
@@ -62,9 +65,9 @@ body {
 					}
 					.right-section {
 						width:50%;
-				
+						padding:5%;
+						float:right;
 						background-color:#EEE;
-						float:left;
 						#camera {
 							.camera-box();
 						}
@@ -116,21 +119,15 @@ body {
 	}
 }
 
-#flash {
-	position:absolute;
-	top:0px;
-	left:0px;
-	z-index:5000;
-	width:100%;
-	height:100%;
-	background-color:#c00;
-	display:none;
-}
-
 div.nophoto {
 	display:none;
 }
 
+.right {
+	position:absolute;
+	float:none;
+	right:0px;
+}
 
 ul#photo_grid {
 	li.captioned_photo {

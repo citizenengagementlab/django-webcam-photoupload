@@ -93,13 +93,22 @@
 </script>
 
 <script type="text/javascript">
+
+$("#tab").click(function() {
+		$("#upload").animate({width: "toggle"});
+	});
+
 $("#camera").html(webcam.get_html(400, 300));
 
+
+	
 
 $("#snap_button").click(function() {
 	console.log("working");
 	webcam.snap("http://localhost:8000/save_raw_image/");
 	console.log("worked");
+	$("#step-1").hide();
+	$("#step-2").show();
 });
 
 </script>
