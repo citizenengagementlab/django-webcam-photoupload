@@ -1,3 +1,4 @@
+/*Mixins*/
 body {
   width: 100%;
   background-color: #DDD;
@@ -6,20 +7,34 @@ body #wrapper {
   width: 80%;
   margin: 0 auto;
 }
-body #wrapper #upload {
-  margin-top: 100px;
+body #wrapper #sticky {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  right: 0px;
+  height: auto;
 }
-body #wrapper #upload #step-1 .left-section {
-  width: 40%;
+body #wrapper #sticky #tab {
+  height: 275px;
+  width: 42px;
+  padding: 10px 20px;
+  line-height: 1.25;
+  background: #d00007 no-repeat 93% 50%;
+  color: #B9B8A4;
+  float: left;
+}
+body #wrapper #sticky #upload {
+  float: right;
+}
+body #wrapper #sticky #upload #step-1 .left-section {
   background-color: #EEE;
   float: left;
-  height: 551px;
 }
-body #wrapper #upload #step-1 .left-section h1 {
+body #wrapper #sticky #upload #step-1 .left-section h1 {
   font-size: 40px;
   margin-left: 20px;
 }
-body #wrapper #upload #step-1 .left-section button {
+body #wrapper #sticky #upload #step-1 .left-section button {
   width: 250px;
   height: 70px;
   border-radius: 10px;
@@ -28,66 +43,66 @@ body #wrapper #upload #step-1 .left-section button {
   display: block;
   margin: 0 auto;
 }
-body #wrapper #upload #step-1 .left-section p {
+body #wrapper #sticky #upload #step-1 .left-section p {
   text-align: center;
+  margin: 0;
 }
-body #wrapper #upload #step-1 .right-section {
+body #wrapper #sticky #upload #step-1 .right-section {
   width: 50%;
-  padding: 5%;
-  float: right;
   background-color: #EEE;
+  float: left;
 }
-body #wrapper #upload #step-1 .right-section #camera {
-  width: 640px;
-  height: 480px;
+body #wrapper #sticky #upload #step-1 .right-section #camera {
+  width: 400px;
+  height: 300px;
   border: 20px solid #333;
   background: #eee;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   border-radius: 20px;
 }
-body #wrapper #upload #step-2 {
+body #wrapper #sticky #upload #step-2 {
   display: none;
 }
-body #wrapper #upload #step-2 .left-section {
+body #wrapper #sticky #upload #step-2 .left-section {
   background-color: #EEE;
   width: 40%;
   float: left;
   height: 551px;
 }
-body #wrapper #upload #step-2 .left-section h1 {
+body #wrapper #sticky #upload #step-2 .left-section h1 {
   font-size: 40px;
   margin-left: 20px;
 }
-body #wrapper #upload #step-2 .left-section form {
+body #wrapper #sticky #upload #step-2 .left-section form {
   margin: 0 auto;
   display: block;
   width: 41%;
 }
-body #wrapper #upload #step-2 .left-section form label {
+body #wrapper #sticky #upload #step-2 .left-section form label {
   display: block;
   font-weight: bold;
   text-transform: uppercase;
 }
-body #wrapper #upload #step-2 .left-section form input[type="text"] {
+body #wrapper #sticky #upload #step-2 .left-section form input[type="text"] {
   width: 80%;
 }
-body #wrapper #upload #step-2 .right-section {
+body #wrapper #sticky #upload #step-2 .right-section {
   width: 50%;
   padding: 5%;
   float: right;
   background-color: #EEE;
 }
-body #wrapper #upload #step-2 .right-section #canvas {
-  width: 640px;
-  height: 480px;
+body #wrapper #sticky #upload #step-2 .right-section #canvas {
+  width: 400px;
+  height: 300px;
   border: 20px solid #333;
   background: #eee;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   border-radius: 20px;
 }
-body #wrapper #upload #step-2 .right-section form {
+body #wrapper #sticky #upload #step-2 .right-section form {
   margin: 0 auto;
   display: block;
 }
@@ -103,4 +118,14 @@ body #wrapper #upload #step-2 .right-section form {
 }
 div.nophoto {
   display: none;
+}
+ul#photo_grid li.captioned_photo {
+  width: 400px;
+  height: 300px;
+  list-style-type: none;
+  display: inline;
+}
+ul#photo_grid li.captioned_photo img {
+  width: inherit;
+  height: inherit;
 }

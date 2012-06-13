@@ -2,7 +2,6 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.base import ContentFile
-from django.http import HttpRequest, HttpResponse
 from django.contrib.sites.models import Site
 
 from photo_upload.models import *
@@ -12,6 +11,7 @@ from photo_upload.forms import PhotoForm
 def index(request):
 	context = {
 		"form": PhotoForm(),
+		"photos": Photo.objects.all()
 	}
 	if request.method == 'POST':
 		form = PhotoForm(request.POST, request.FILES)
@@ -25,10 +25,13 @@ def index(request):
 @csrf_exempt
 def save_raw_image(request):
 	context = {}
+	form = Photo(name="test")
+	print form
+	form.photo = request.POST
+	print form.photo
 	if request.method == 'POST':
-		print raw_post_data
-		Photo.photo.save("/uploads/",ContentFile(request.raw_post_data)) #trying to save a file to my uploads model in my photo directory.  pretty sure its already a jpeg so i can just save it the request.POST?  raw_post_data didn't work - not sure it is a real thing.
-		print "Cool"
+		form.save()
+		print form	
 	else:
 		print "Error"
 	return render_to_response("index.html",context,context_instance=RequestContext(request))

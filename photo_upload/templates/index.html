@@ -1,63 +1,85 @@
 {% extends "base.html" %}
 
-{%block content%}
 
-<div id="upload">
-	<article id="step-1">
-		<section class="left-section">
-			<h1>Step 1: Take a Photo</h1>
-			<button id="snap_button">Say Cheese</button>
-			<p>No webcam?  Go straight to our <a href="#show_photo" id="show_photo"> upload form.</a></p>
-		</section>
-		<section class="right-section">
-			<div id="camera"></div>
-		</section>
-	</article>
-	
-	<article id ="step-2">
-		<section class="left-section">
-			<h1>Step 2:  Share Your Message</h1>	
-			<form action="" method="POST" enctype="multipart/form-data">
-				{% csrf_token %}
-				<!-- csrf token ajax for photo, pass to PhotoUpload view -->
-				{{ form.non_field_errors }}
-				<div class="fieldWrapper">
-					{{ form.name.errors }}
-					<label for="id_name">Your Name</label>
-					{{ form.name }}
-				</div>
-			    <div class="fieldWrapper">
-			        {{ form.zip_code.errors }}
-			        <label for="id_zip_code">Your zip code</label>
-			        {{ form.zip_code}}
-			    </div>
-			    <div class="fieldWrapper">
-			        {{ form.message.errors }}
-			        <label for="id_message">Your message:</label>
-			        {{ form.message}}
-			    </div>
-			    <div class="fieldWrapper">
-			        {{ form.email.errors }}
-			        <label for="id_email">Your email</label>
-			        {{ form.email}}
-			    </div>	
-			    <div class="nophoto">
-				    <div class="fieldWrapper">
-				        {{ form.photo.errors }}
-				        <label for="id_photo">Upload a photo</label>
-				        {{ form.photo}}
-				    </div>		
-			    </div>						
-				<input id="sendForm" type="submit" value="Send" />
-			</form>	
-		</section>
-		<section class="right-section">
-			<canvas id="canvas" height="480" width="640"></canvas>
-		</section>
-	</article>
-</div>
-
+{%block photo_grid%}
+<ul id="photo_grid">
+	{%for photo in photos%}
+		<li class="captioned_photo"><img src="{{STATIC_URL}}{{photo.captioned_photo}}" /></li>
+	{%endfor%}
+</ul>
 {%endblock%}
+
+{%block upload_form%}
+<div id="sticky">
+	<div id="tab"></div>
+	<div id="upload">
+		<article id="step-1">
+			<section class="left-section">
+				<button id="snap_button">Say Cheese</button>
+				<p>No webcam?  Go straight to our <a href="#show_photo" id="show_photo"> upload form.</a></p>
+			</section>
+			<section class="right-section">
+				<div id="camera"></div>
+			</section>
+		</article>
+		
+		<article id ="step-2">
+			<section class="left-section">
+				<h1>Step 2:  Share Your Message</h1>	
+				<form action="" method="POST" enctype="multipart/form-data">
+					{% csrf_token %}
+					<!-- csrf token ajax for photo, pass to PhotoUpload view -->
+					{{ form.non_field_errors }}
+					<div class="fieldWrapper">
+						{{ form.name.errors }}
+						<label for="id_name">Your Name</label>
+						{{ form.name }}
+					</div>
+				    <div class="fieldWrapper">
+				        {{ form.zip_code.errors }}
+				        <label for="id_zip_code">Your zip code</label>
+				        {{ form.zip_code}}
+				    </div>
+				    <div class="fieldWrapper">
+				        {{ form.message.errors }}
+				        <label for="id_message">Your message:</label>
+				        {{ form.message}}
+				    </div>
+				    <div class="fieldWrapper">
+				        {{ form.email.errors }}
+				        <label for="id_email">Your email</label>
+				        {{ form.email}}
+				    </div>	
+				    <div class="nophoto">
+					    <div class="fieldWrapper">
+					        {{ form.photo.errors }}
+					        <label for="id_photo">Upload a photo</label>
+					        {{ form.photo}}
+					    </div>		
+				    </div>						
+					<input id="sendForm" type="submit" value="Send" />
+				</form>	
+			</section>
+			<section class="right-section">
+				<canvas id="canvas" height="480" width="640"></canvas>
+			</section>
+		</article>
+	</div>
+</div>
+{%endblock%}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 {%block extra_script%}
 
@@ -71,7 +93,7 @@
 </script>
 
 <script type="text/javascript">
-$("#camera").html(webcam.get_html(640, 480));
+$("#camera").html(webcam.get_html(400, 300));
 
 
 $("#snap_button").click(function() {
