@@ -25,10 +25,13 @@ def index(request):
 	
 @csrf_exempt
 def save_raw_image(request):
+	raw_post = request.POST
+	textbox = TextBox.objects.all()
 	context = {
 		"form": PhotoForm(),
 		"photos": Photo.objects.filter(approved=True),
-		"textbox": TextBox(),
+		"textbox": textbox,
+		"raw_post": raw_post,
 	}
 	if request.method == 'POST':
 		print request.POST

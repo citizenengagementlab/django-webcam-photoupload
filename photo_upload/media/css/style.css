@@ -4,7 +4,7 @@ body {
   background-color: #DDD;
 }
 body #wrapper {
-  width: 95%;
+  width: 1060px;
   margin: 0 auto;
 }
 body #wrapper #sticky {
@@ -100,6 +100,9 @@ body #wrapper #sticky #upload #step-2 .left-section {
 body #wrapper #sticky #upload #step-2 .left-section form {
   margin-top: 30px;
 }
+body #wrapper #sticky #upload #step-2 .left-section form input[type="text"] {
+  width: 80%;
+}
 body #wrapper #sticky #upload #step-2 .left-section form label {
   display: block;
 }
@@ -126,33 +129,27 @@ div.nophoto {
   right: 0px;
 }
 .errorlist {
-  position: relative;
-  right: 22px;
   margin: 5px 0px;
   color: red;
 }
 ul#photo_grid {
-  position: relative;
-}
-ul#photo_grid h1 {
   margin: 0px;
-  position: relative;
-  text-align: center;
+  padding: 0px;
+  margin: 20px auto;
 }
 ul#photo_grid li.captioned_photo {
   width: 350px;
   height: 260px;
   list-style-type: none;
   display: inline;
-  float: left;
-  margin: 5px;
 }
 ul#photo_grid li.captioned_photo.first {
   background: #666;
+  display: inline-block;
+  vertical-align: top;
   color: #BBB;
   width: 350px;
   height: 260px;
-  display: block;
   box-shadow: 1px 1px 3px black;
 }
 ul#photo_grid li.captioned_photo.first h2,
@@ -164,4 +161,66 @@ ul#photo_grid li.captioned_photo img {
   width: inherit;
   height: inherit;
   box-shadow: 1px 1px 3px black;
+}
+/* Simple as fuck reset */
+/* ----------------------------
+simple reset
+---------------------------- */
+html,
+body,
+ul,
+ol,
+li,
+form,
+fieldset,
+legend {
+  margin: 0;
+  padding: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-top: 0;
+}
+fieldset,
+img {
+  border: 0;
+}
+legend {
+  color: #000;
+}
+li {
+  list-style: none;
+}
+sup {
+  vertical-align: text-top;
+}
+sub {
+  vertical-align: text-bottom;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+caption,
+th,
+td {
+  text-align: left;
+  vertical-align: top;
+  font-weight: normal;
+}
+input,
+textarea,
+select {
+  font-size: 110%;
+  line-height: 1.1;
+}
+abbr,
+acronym {
+  border-bottom: .1em dotted;
+  cursor: help;
 }

@@ -40,9 +40,8 @@
 body {
 	width:100%;
 	background-color:#DDD;
-	
 	#wrapper {
-		width:95%;
+		width:1060px;
 		margin:0 auto;
 		#sticky {
 			.sticky();
@@ -122,11 +121,12 @@ body {
 						left:20px;
 							
 						form {	
-							
 							margin-top:30px;	
+							input[type="text"] {
+								width:80%;
+							}
 							label {
 								display:block;
-									
 							}
 						}
 					}
@@ -157,32 +157,26 @@ div.nophoto {
 }
 
 .errorlist {
-	position: relative;
-	right: 22px;
-margin: 5px 0px;
-color: red;
+	margin: 5px 0px;
+	color: red;
 }
 
 ul#photo_grid {
-	h1 {
-			margin:0px;
-			position:relative;
-			text-align:center;
-		}
-	position:relative;	
+	margin:0px;
+	padding:0px;
+	margin: 20px auto;
 	li.captioned_photo {
 		width:350px;
 		height:260px;
 		list-style-type: none;
 		display:inline;
-		float:left;
-		margin:5px;
 		&.first {
 		background:#666;
+		display:inline-block;
+		vertical-align: top;
 		color:#BBB;
 		width:350px;
 		height:260px;
-		display:block;
 		box-shadow: 1px 1px 3px black;
 		h2, p {
 			margin: 20px;
@@ -195,4 +189,55 @@ ul#photo_grid {
 			box-shadow: 1px 1px 3px black;
 		}
 	}
+}
+
+
+
+/* Simple as fuck reset */
+
+/* ----------------------------
+simple reset
+---------------------------- */
+
+html, body, ul, ol, li, form, fieldset, legend
+{
+	margin: 0;
+	padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6, p { margin-top: 0; }
+
+fieldset,img { border: 0; }
+
+legend { color: #000; }
+
+li { list-style: none; }
+
+sup { vertical-align: text-top; }
+
+sub { vertical-align: text-bottom; }
+
+table
+{
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+caption, th, td
+{
+	text-align: left;
+	vertical-align: top;
+	font-weight: normal;
+}
+
+input, textarea, select
+{
+	font-size: 110%;
+	line-height: 1.1;
+}
+
+abbr, acronym
+{
+	border-bottom: .1em dotted;
+	cursor: help;
 }

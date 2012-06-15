@@ -4,7 +4,7 @@
 {%block photo_grid%}
 
 <ul id="photo_grid">
-		<h1>Photo Upload Demo</h1>
+	{{raw_post}}
 		<li class="captioned_photo first">
 		{%for text in textbox%}
 			<h2>{{text.title}}</h2>
@@ -96,7 +96,6 @@ function switchStep() {
 //Callback function for jpegcam - invokes switchStep, creates canvas, and adds jpeg image to canvas
 function callbackCamera(returned_data) {
 		switchStep();
-	
 		//Todo - how do I pass returned image URL... do I define request.POST in context?  Shouldn't this be a file that I'm uploading?  Why is it being returned as a POST and not in request.FILES...
 		
 		/* Maybe something like
