@@ -157,7 +157,8 @@ ul#photo_grid li.captioned_photo.first {
 }
 ul#photo_grid li.captioned_photo.first h2,
 ul#photo_grid li.captioned_photo.first p {
-  margin-left: 20px;
+  margin: 20px;
+  color: #ECDECC;
 }
 ul#photo_grid li.captioned_photo img {
   width: inherit;

@@ -8,9 +8,11 @@ from photo_upload.forms import PhotoForm
 	
 
 def index(request):
+	textbox = TextBox.objects.all()
 	context = {
 		"form": PhotoForm(),
-		"photos": Photo.objects.filter(approved=True)
+		"photos": Photo.objects.filter(approved=True),
+		"textbox": textbox,
 	}
 	if request.method == 'POST':
 		form = PhotoForm(request.POST, request.FILES)
@@ -26,7 +28,7 @@ def save_raw_image(request):
 	context = {
 		"form": PhotoForm(),
 		"photos": Photo.objects.filter(approved=True),
-		#"raw_photo": uploaded image to be rendered to canvas
+		"textbox": TextBox(),
 	}
 	if request.method == 'POST':
 		print request.POST

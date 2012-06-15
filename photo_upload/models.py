@@ -1,5 +1,17 @@
 from django.db import models
 
+class TextBox(models.Model):
+	title = models.CharField(max_length=50)
+	description = models.CharField(max_length=460)
+	
+	def __unicode__(self):
+		return "%s, %s" % (self.title, self.description,)
+	
+	def get_title(self):
+		return "%s" % self.title
+	
+	def get_description(self):
+		return "%s" % self.description
 
 class Photo(models.Model):
 	name = models.CharField(max_length=50)

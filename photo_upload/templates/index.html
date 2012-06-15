@@ -6,8 +6,10 @@
 <ul id="photo_grid">
 		<h1>Photo Upload Demo</h1>
 		<li class="captioned_photo first">
-			<h2>What is this?</h2>
-			<p>Almost certainly a photo upload tool.  You could potentially put your cause in this box.  A call to action of sorts.</p>
+		{%for text in textbox%}
+			<h2>{{text.title}}</h2>
+			<p>{{text.description}}</p>
+		{%endfor%}
 		</li>
 	{%for photo in photos%}
 		<li class="captioned_photo"><img src="{{STATIC_URL}}{{photo.captioned_photo}}" /></li>
@@ -69,23 +71,32 @@
 {%endblock%}
 
 {%block extra_script%}
+<!-- Webcam -->
+<script src="{{STATIC_URL}}js/webcam.js"></script>
+<!--[if IE]><script src="{{STATIC_URL}}js/excanvas.compiled.js"></script><![endif]-->
 
-<script type="text/javascript" src="{{STATIC_URL}}js/webcam.js"></script>
 
+<!-- Setting up webcam -->
 <script type="text/javascript">
 	webcam.set_swf_url('{{STATIC_URL}}js/webcam.swf');
-	webcam.set_api_url('http://localhost:8000/save_raw_image/');
 	webcam.set_shutter_sound(true, "{{STATIC_URL}}js/shutter.mp3");
 	webcam.set_quality(90);
-    webcam.set_stealth(false); // enable stealth mode
+    webcam.set_stealth(false);
     webcam.set_hook('onComplete', 'callbackCamera');
-</script>
+    
+//Render webcam
+$("#camera").html(webcam.get_html(350, 260));
 
-<script type="text/javascript">
+//Switches uploads steps
+function switchStep() {
+	$("#step-1").hide();
+	$("#step-2").show();
+}
 
+//Callback function for jpegcam - invokes switchStep, creates canvas, and adds jpeg image to canvas
 function callbackCamera(returned_data) {
-		$("#step-1").hide();
-		$("#step-2").show();
+		switchStep();
+	
 		//Todo - how do I pass returned image URL... do I define request.POST in context?  Shouldn't this be a file that I'm uploading?  Why is it being returned as a POST and not in request.FILES...
 		
 		/* Maybe something like
@@ -97,21 +108,21 @@ function callbackCamera(returned_data) {
 		ctx.putImageData(image_url,0,0);
 }
 
-$("document").ready(function() {
-	$("#tab").trigger("click")
-});
-
+//Activate upload section... todo, fix bug with image displaying again for just a moment.
 $("#tab").click(function() {
 		$("#upload").animate({width: "toggle"});
 	});
 
-$("#camera").html(webcam.get_html(350, 260));
 
 
+
+//Take picture, and instantiate callback function if successful.
 $("#snap_button").click(function() {
 	webcam.snap("save_raw_image", "callbackCamera");	
 });
 
+
+//Show upload form for photo
 $("#show_photo").click(function(e) {
 	e.preventDefault();
 	document.location.hash = "#show_photo"
@@ -119,7 +130,7 @@ $("#show_photo").click(function(e) {
 		$("div.nophoto").removeClass("nophoto");
 		$("#step-1").hide();
 		$("#step-2").show();
-	document.location.hash = ""
+	document.location.hash = "#upload_photo"
 	}
 });
 
