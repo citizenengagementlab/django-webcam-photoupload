@@ -27,7 +27,7 @@
 				<p>No webcam?  Go straight to our <a href="#show_photo" id="show_photo"> upload form.</a></p>
 			</section>
 			<section class="right-section">
-				<div id="camera"></div>
+				<form class="camera" id="id_raw_photo" method="post" enc-type="multipart/form-data"></form><!-- camera is rendered in this form wrapper -->
 			</section>
 		</article>
 		
@@ -71,6 +71,8 @@
 {%endblock%}
 
 {%block extra_script%}
+<!-- Most of this is going to be cut out into a separate JS file soon enough -->
+
 <!-- Webcam -->
 <script src="{{STATIC_URL}}js/webcam.js"></script>
 <!--[if IE]><script src="{{STATIC_URL}}js/excanvas.compiled.js"></script><![endif]-->
@@ -85,7 +87,7 @@
     webcam.set_hook('onComplete', 'callbackCamera');
     
 //Render webcam
-$("#camera").html(webcam.get_html(350, 260));
+$(".camera").html(webcam.get_html(350, 260));
 
 //Switches uploads steps
 function switchStep() {
@@ -97,20 +99,22 @@ function switchStep() {
 function callbackCamera(returned_data) {
 		switchStep();
 		//Todo - how do I pass returned image URL... do I define request.POST in context?  Shouldn't this be a file that I'm uploading?  Why is it being returned as a POST and not in request.FILES...
-		
-		/* Maybe something like
-			var image_url = returned_data.url or maybe just some sort of a context link like {{raw_image_url}};
-		
-		*/
+	
 		var canvas = document.getElementById("canvas");
 		var ctx = canvas.getContext("2d");
-		ctx.putImageData(image_url,0,0);
+		
+		var img = new Image();
+		img.src = "/path/to/raw_image.jpg";
+		img.onload = function() {
+			ctx.drawImage(img, 0, 0);
+		}
+		image = ctx.getImageData(0, 0, 350, 260);
 }
 
-//Activate upload section... todo, fix bug with image displaying again for just a moment.
+//Activate upload section... todo, fix bug with image displaying again for just a moment.  Pretty sure it is something to do with width.
 $("#tab").click(function() {
 		$("#upload").animate({width: "toggle"});
-	});
+});
 
 
 
@@ -121,7 +125,7 @@ $("#snap_button").click(function() {
 });
 
 
-//Show upload form for photo
+//Show upload form field for photo
 $("#show_photo").click(function(e) {
 	e.preventDefault();
 	document.location.hash = "#show_photo"
