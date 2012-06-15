@@ -9,13 +9,12 @@ body #wrapper {
 }
 body #wrapper #sticky {
   position: fixed;
-  top: 5px;
   z-index: 1;
+  top: 0px;
   right: 0px;
-  height: auto;
 }
 body #wrapper #sticky aside#tab {
-  height: 275px;
+  height: 280px;
   width: 42px;
   padding: 10px 20px;
   line-height: 1.25;
@@ -40,7 +39,7 @@ body #wrapper #sticky aside#tab h2 {
   font: 36px Georgia, Serif;
   font-weight: bold;
   padding: .7em;
-  margin: 55px 0px;
+  margin: 65px 0px;
   line-height: 1;
   position: absolute;
   top: 0;
@@ -48,6 +47,7 @@ body #wrapper #sticky aside#tab h2 {
   width: 1000%;
 }
 body #wrapper #sticky #upload {
+  display: none;
   float: right;
   background: #FFF;
   box-shadow: inset 0 0 2px #000;
@@ -96,6 +96,9 @@ body #wrapper #sticky #upload #step-2 .left-section {
   float: left;
   position: relative;
   left: 20px;
+}
+body #wrapper #sticky #upload #step-2 .left-section form {
+  margin-top: 30px;
 }
 body #wrapper #sticky #upload #step-2 .left-section form label {
   display: block;
