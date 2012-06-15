@@ -1,17 +1,16 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
-from django.core.files.base import ContentFile
-from django.contrib.sites.models import Site
 
 from photo_upload.models import *
 
 from photo_upload.forms import PhotoForm
 	
+
 def index(request):
 	context = {
 		"form": PhotoForm(),
-		"photos": Photo.objects.all()
+		"photos": Photo.objects.filter(approved=True)
 	}
 	if request.method == 'POST':
 		form = PhotoForm(request.POST, request.FILES)
@@ -24,22 +23,18 @@ def index(request):
 	
 @csrf_exempt
 def save_raw_image(request):
-	context = {}
-	form = Photo(name="test")
-	print form
-	form.photo = request.POST
-	print form.photo
+	context = {
+		"form": PhotoForm(),
+		"photos": Photo.objects.filter(approved=True),
+		#"raw_photo": uploaded image to be rendered to canvas
+	}
 	if request.method == 'POST':
-		form.save()
-		print form	
+		print request.POST
+		#Save object reference to new Photo instance, with the property raw_photo only, and upload file to server in raw directory.  We want to pass this back too, so I assume that would be something we add to the context...
 	else:
 		print "Error"
 	return render_to_response("index.html",context,context_instance=RequestContext(request))
-	
-
-		
-			
-			
+		#TODO: is there a better way to return this to the same page but with an updated context?
 			
 			
 			

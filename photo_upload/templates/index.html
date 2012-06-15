@@ -54,7 +54,7 @@
 					    <div class="fieldWrapper">
 					        {{ form.photo.errors }}
 					        <label for="id_photo">Upload a photo</label>
-					        {{ form.photo}}
+					        {{ form.captioned_photo}}
 					    </div>		
 				    </div>						
 					<input id="sendForm" type="submit" value="Send" />
@@ -68,31 +68,34 @@
 </div>
 {%endblock%}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 {%block extra_script%}
 
 <script type="text/javascript" src="{{STATIC_URL}}js/webcam.js"></script>
 
 <script type="text/javascript">
 	webcam.set_swf_url('{{STATIC_URL}}js/webcam.swf');
-	webcam.set_api_url('/save_raw_image/');
+	webcam.set_api_url('http://localhost:8000/save_raw_image/');
 	webcam.set_shutter_sound(true, "{{STATIC_URL}}js/shutter.mp3");
 	webcam.set_quality(90);
+    webcam.set_stealth(false); // enable stealth mode
+    webcam.set_hook('onComplete', 'callbackCamera');
 </script>
 
 <script type="text/javascript">
+
+function callbackCamera(returned_data) {
+		$("#step-1").hide();
+		$("#step-2").show();
+		//Todo - how do I pass returned image URL... do I define request.POST in context?  Shouldn't this be a file that I'm uploading?  Why is it being returned as a POST and not in request.FILES...
+		
+		/* Maybe something like
+			var image_url = returned_data.url or maybe just some sort of a context link like {{raw_image_url}};
+		
+		*/
+		var canvas = document.getElementById("canvas");
+		var ctx = canvas.getContext("2d");
+		ctx.putImageData(image_url,0,0);
+}
 
 $("document").ready(function() {
 	$("#tab").trigger("click")
@@ -105,14 +108,19 @@ $("#tab").click(function() {
 $("#camera").html(webcam.get_html(350, 260));
 
 
-	
-
 $("#snap_button").click(function() {
-	console.log("working");
-	webcam.snap("http://localhost:8000/save_raw_image/");
-	console.log("worked");
-	$("#step-1").hide();
-	$("#step-2").show();
+	webcam.snap("save_raw_image", "callbackCamera");	
+});
+
+$("#show_photo").click(function(e) {
+	e.preventDefault();
+	document.location.hash = "#show_photo"
+	if(document.location.hash === "#show_photo") {
+		$("div.nophoto").removeClass("nophoto");
+		$("#step-1").hide();
+		$("#step-2").show();
+	document.location.hash = ""
+	}
 });
 
 </script>
