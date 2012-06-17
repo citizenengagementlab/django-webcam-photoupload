@@ -1,50 +1,62 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponseRedirect
-from photo_upload.models import *
+from django.http import HttpResponse
+from django.core.files.base import ContentFile
+from django.conf import settings
+from django.shortcuts import render
+import json
+import md5
 
+
+from photo_upload.models import *
 from photo_upload.forms import *
 	
 
 def index(request):
 	textbox = TextBox.objects.all()
-	context = {
-		"form": PhotoForm(),
-		"photos": Photo.objects.filter(approved=True),
-		"textbox": textbox,
+	form = PhotoForm(request.POST or None)
+	
+	if form.is_valid():
+		new_photo = form.save()
+		
+	response_data = {
+		'form': form
 	}
-	if request.method == 'POST':
-		form = PhotoForm(request.POST, request.FILES)
-		if form.is_valid():
-			new_upload = form.save()
-		else:
-			context['form'] = form
-			print form.errors
-	return render_to_response("index.html",context,context_instance=RequestContext(request))
+	
+	form = PhotoForm(request.POST or None, request.FILES or None)  #handy way to catch all cases
+	if form.is_valid():
+		new_upload = form.save()
+	else: 
+		print form.errors
+		
+	context = {
+        "photos": Photo.objects.filter(approved=True),
+        'form': form,
+        "textbox": textbox,
+    }
+
+	return render(request, "index.html", dictionary=context)
+
 	
 @csrf_exempt
-def save_raw_image(request):
-	textbox = TextBox.objects.all()
-	context = {
-		"form": RawPhotoForm(),
-		"photos": Photo.objects.filter(approved=True),
-		"textbox": textbox,
-	}
+def upload_raw_photo(request):
 	if request.method == 'POST':
-		#I thought certain file types were returned as request.FILE, rather than POST.  This part is still a bit mysterious to me.
-		form = RawPhotoForm(request.POST, request.FILES)
-		if form.is_valid():
-			new_upload = form.save(commit=False)
-			return HttpResponseRedirect("raws/")
-		else:
-			context['form'] = form
-			print form.errors
-		#Save object reference to new Photo instance, with the property raw_photo only, and upload file to server in raw directory.  We want to pass this back too, so I assume that would be something we add to the context...
-	else:
-		print "Error"
-	return render_to_response("index.html",context,context_instance=RequestContext(request))
-			
+ 		raw_photo = RawPhoto()
+ 		raw_content_file = ContentFile(request.raw_post_data)
+ 		file_name = "tests.jpg"
+ 		raw_photo.photo.save(file_name, raw_content_file)
+ 		data = {
+ 			'success': True,
+ 			'file_name': file_name,
+ 			'file_url': raw_photo.photo.url,
+ 			'raw_photo_pk': raw_photo.pk
+ 		}
+ 		print "yep"
+ 	else:
+ 		data = {'success': False}
+	return HttpResponse(json.dumps(data))
+
 			
 			
 			

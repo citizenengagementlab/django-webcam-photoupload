@@ -1,5 +1,6 @@
 import os,sys
 from os.path import join
+from django.core.files.storage import FileSystemStorage
 PROJECT_PATH = os.path.abspath(os.path.split(__file__)[0])
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -70,6 +71,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     MEDIA_ROOT,
 )
+
+raw_photo_storage = FileSystemStorage(location=MEDIA_ROOT, base_url='/media/')
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -151,3 +154,5 @@ LOGGING = {
         },
     }
 }
+
+

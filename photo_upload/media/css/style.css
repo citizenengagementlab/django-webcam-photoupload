@@ -79,7 +79,7 @@ body #wrapper #sticky #upload #step-1 .right-section {
   padding: 1%;
   float: right;
 }
-body #wrapper #sticky #upload #step-1 .right-section .camera {
+body #wrapper #sticky #upload #step-1 .right-section #camera {
   width: 350px;
   height: 260px;
   border: 15px solid #333;
@@ -162,7 +162,6 @@ ul#photo_grid li.captioned_photo img {
   height: inherit;
   box-shadow: 1px 1px 3px black;
 }
-/* Simple as fuck reset */
 /* ----------------------------
 simple reset
 ---------------------------- */

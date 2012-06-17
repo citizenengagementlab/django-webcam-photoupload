@@ -27,7 +27,7 @@
 				<p>No webcam?  Go straight to our <a href="#show_photo" id="show_photo"> upload form.</a></p>
 			</section>
 			<section class="right-section">
-				<form class="camera" id="id_raw_photo" method="post" enc-type="multipart/form-data"></form><!-- camera is rendered in this form wrapper -->
+					<div id="camera" />
 			</section>
 		</article>
 		
@@ -63,7 +63,7 @@
 				</form>	
 			</section>
 			<section class="right-section">
-				<canvas id="canvas" height="350" width="260"></canvas>
+				<canvas id="canvas" width="350" height="260"></canvas>
 			</section>
 		</article>
 	</div>
@@ -87,7 +87,7 @@
     webcam.set_hook('onComplete', 'callbackCamera');
     
 //Render webcam
-$(".camera").html(webcam.get_html(350, 260));
+$("#camera").html(webcam.get_html(350, 260));
 
 //Switches uploads steps
 function switchStep() {
@@ -96,32 +96,54 @@ function switchStep() {
 }
 
 //Callback function for jpegcam - invokes switchStep, creates canvas, and adds jpeg image to canvas
-function callbackCamera(returned_data) {
+function callbackCamera(response) {
+		var data = JSON.parse(response);
+		//going from step 1 to 2 in the upload form.
 		switchStep();
-		//Todo - how do I pass returned image URL... do I define request.POST in context?  Shouldn't this be a file that I'm uploading?  Why is it being returned as a POST and not in request.FILES...
-	
+		//canvas 
 		var canvas = document.getElementById("canvas");
 		var ctx = canvas.getContext("2d");
+
+		//Making an image object to draw to my canvas
+	
+			var img = new Image();
+			console.log(img);
+			img.src = "{{MEDIA_ROOT}}" + data.file_url + "";
+			console.log(img.src)
+			img.onload = function() {
+				ctx.drawImage(img, 0, 0, 350, 260);
+			
+		} 
 		
-		var img = new Image();
-		img.src = "/path/to/raw_image.jpg";
-		img.onload = function() {
-			ctx.drawImage(img, 0, 0);
-		}
-		image = ctx.getImageData(0, 0, 350, 260);
+		$("#id_name").change(function() {
+			ctx.drawImage(img, 0, 0, 350, 260);
+			ctx.font = "36px Helvetica"
+			ctx.fillText(this.value, 0, 80);
+		});
+		
+		$("#id_zip_code").change(function() {
+			ctx.drawImage(img, 0, 0, 350, 260);
+			ctx.font = "24px Helvetica"
+			ctx.fillText(this.value, 0, 150);
+		});
+		
+		$("#canvas").hover(function() {
+			ctx.globalAlpha(0.4);
+			ctx.fillRect(0,200,350,60);
+		}, function() {
+			ctx.drawImage(img,0,0,350,360);
+		});
 }
+
 
 //Activate upload section... todo, fix bug with image displaying again for just a moment.  Pretty sure it is something to do with width.
 $("#tab").click(function() {
 		$("#upload").animate({width: "toggle"});
 });
 
-
-
-
 //Take picture, and instantiate callback function if successful.
 $("#snap_button").click(function() {
-	webcam.snap("save_raw_image", "callbackCamera");	
+	webcam.snap("upload_raw_photo", "callbackCamera");	
 });
 
 
