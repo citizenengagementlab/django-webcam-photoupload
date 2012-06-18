@@ -7,5 +7,7 @@ class TextBoxAdmin(admin.ModelAdmin):
 class PhotoAdmin(admin.ModelAdmin):
 	list_display = ['name','zip_code','email']
 
+
 admin.site.register(Photo,PhotoAdmin)
 admin.site.register(TextBox, TextBoxAdmin)
+admin.site.register(CaptionedPhoto)

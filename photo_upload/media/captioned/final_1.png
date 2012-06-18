@@ -1,0 +1,21 @@
+------WebKitFormBoundaryE8IMRaBx4kSLCUuq
+Content-Disposition: form-data; name="csrfmiddlewaretoken"
+
+EZdu17V1iWAejue9BhrC0XOqxBBFD63L
+------WebKitFormBoundaryE8IMRaBx4kSLCUuq
+Content-Disposition: form-data; name="name"
+
+123;lk
+------WebKitFormBoundaryE8IMRaBx4kSLCUuq
+Content-Disposition: form-data; name="zip_code"
+
+12345
+------WebKitFormBoundaryE8IMRaBx4kSLCUuq
+Content-Disposition: form-data; name="email"
+
+mike@example.com
+------WebKitFormBoundaryE8IMRaBx4kSLCUuq
+Content-Disposition: form-data; name="captioned_photo"
+
+
+------WebKitFormBoundaryE8IMRaBx4kSLCUuq--

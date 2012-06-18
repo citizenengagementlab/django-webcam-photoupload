@@ -1,0 +1,21 @@
+------WebKitFormBoundaryvDEdACvMuBV8umsH
+Content-Disposition: form-data; name="csrfmiddlewaretoken"
+
+EZdu17V1iWAejue9BhrC0XOqxBBFD63L
+------WebKitFormBoundaryvDEdACvMuBV8umsH
+Content-Disposition: form-data; name="name"
+
+Mike
+------WebKitFormBoundaryvDEdACvMuBV8umsH
+Content-Disposition: form-data; name="zip_code"
+
+12345
+------WebKitFormBoundaryvDEdACvMuBV8umsH
+Content-Disposition: form-data; name="email"
+
+whatever@example.com
+------WebKitFormBoundaryvDEdACvMuBV8umsH
+Content-Disposition: form-data; name="captioned_photo"
+
+
+------WebKitFormBoundaryvDEdACvMuBV8umsH--

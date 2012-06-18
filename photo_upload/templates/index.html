@@ -33,7 +33,7 @@
 		
 		<article id ="step-2">
 			<section class="left-section">
-				<form action="" method="POST" enctype="multipart/form-data">
+				<form action="/submit" method="POST" enctype="multipart/form-data">
 					{% csrf_token %}
 					<!-- csrf token ajax for photo, pass to PhotoUpload view -->
 					{{ form.non_field_errors }}
@@ -55,7 +55,7 @@
 				    <div class="nophoto">
 					    <div class="fieldWrapper">
 					        {{ form.photo.errors }}
-					        <label for="id_photo">Upload a photo</label>
+					        <label for="id_captioned_photo">Upload a photo</label>
 					        {{ form.captioned_photo}}
 					    </div>		
 				    </div>						
@@ -97,42 +97,42 @@ function switchStep() {
 
 //Callback function for jpegcam - invokes switchStep, creates canvas, and adds jpeg image to canvas
 function callbackCamera(response) {
-		var data = JSON.parse(response);
-		//going from step 1 to 2 in the upload form.
-		switchStep();
-		//canvas 
-		var canvas = document.getElementById("canvas");
-		var ctx = canvas.getContext("2d");
+	var data = JSON.parse(response);
+	//going from step 1 to 2 in the upload form.
+	switchStep();
+	//canvas 
+	var canvas = document.getElementById("canvas");
+	var ctx = canvas.getContext("2d");
 
-		//Making an image object to draw to my canvas
+	//Making an image object to draw to my canvas
+
+		var img = new Image();
+		console.log(img);
+		img.src = "{{MEDIA_ROOT}}" + data.file_url + "";
+		console.log(img.src)
+		img.onload = function() {
+			ctx.drawImage(img, 0, 0, 350, 260);
+		
+	} 
 	
-			var img = new Image();
-			console.log(img);
-			img.src = "{{MEDIA_ROOT}}" + data.file_url + "";
-			console.log(img.src)
-			img.onload = function() {
-				ctx.drawImage(img, 0, 0, 350, 260);
-			
-		} 
-		
-		$("#id_name").change(function() {
-			ctx.drawImage(img, 0, 0, 350, 260);
-			ctx.font = "36px Helvetica"
-			ctx.fillText(this.value, 0, 80);
-		});
-		
-		$("#id_zip_code").change(function() {
-			ctx.drawImage(img, 0, 0, 350, 260);
-			ctx.font = "24px Helvetica"
-			ctx.fillText(this.value, 0, 150);
-		});
-		
-		$("#canvas").hover(function() {
-			ctx.globalAlpha(0.4);
-			ctx.fillRect(0,200,350,60);
-		}, function() {
-			ctx.drawImage(img,0,0,350,360);
-		});
+	$("#id_name").change(function() {
+		ctx.drawImage(img, 0, 0, 350, 260);
+		ctx.font = "36px Helvetica"
+		ctx.fillText(this.value, 0, 80);
+	});
+	
+	$("#id_zip_code").change(function() {
+		ctx.drawImage(img, 0, 0, 350, 260);
+		ctx.font = "24px Helvetica"
+		ctx.fillText(this.value, 0, 150);
+	});
+	
+	$("#canvas").hover(function() {
+		ctx.globalAlpha(0.4);
+		ctx.fillRect(0,200,350,60);
+	}, function() {
+		ctx.drawImage(img,0,0,350,360);
+	});
 }
 
 
@@ -159,6 +159,12 @@ $("#show_photo").click(function(e) {
 	}
 });
 
+
+$("#sendForm").click(function() {
+	var canvas = document.getElementById("canvas");
+	var ctx = canvas.getContext("2d");
+	//How do we convert this data into part of our request and get it to be read as a request.FILES so that we can save it to our PhotoForm as captioned_photo_id.  We want to bind the data from the canvas to the id "id_captioned_photo" and have it save in our view as a request.FILES...
+})
 </script>
 
 {%endblock%}
