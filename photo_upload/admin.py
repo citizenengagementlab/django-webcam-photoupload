@@ -10,4 +10,3 @@ class PhotoAdmin(admin.ModelAdmin):
 
 admin.site.register(Photo,PhotoAdmin)
 admin.site.register(TextBox, TextBoxAdmin)
-admin.site.register(CaptionedPhoto)

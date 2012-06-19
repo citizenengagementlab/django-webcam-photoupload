@@ -6,7 +6,7 @@ from django.core.files.base import ContentFile
 from django.conf import settings
 from django.shortcuts import render
 import json
-import md5
+# import md5 - figure this out later
 
 
 from photo_upload.models import *
@@ -44,7 +44,7 @@ def upload_raw_photo(request):
 	if request.method == 'POST':
  		raw_photo = RawPhoto()
  		raw_content_file = ContentFile(request.raw_post_data)
- 		file_name = "test.jpg"
+ 		file_name = "test.jpg" #temporary
  		raw_photo.photo.save(file_name, raw_content_file)
  		data = {
  			'success': True,

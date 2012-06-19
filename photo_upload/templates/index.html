@@ -130,12 +130,6 @@ function callbackCamera(response) {
 		ctx.fillText(this.value, 0, 150);
 	});
 	
-	$("#canvas").hover(function() {
-		ctx.globalAlpha(0.4);
-		ctx.fillRect(0,200,350,60);
-	}, function() {
-		ctx.drawImage(img,0,0,350,360);
-	});
 }
 
 //Activate upload section... todo, fix bug with image displaying again for just a moment.  Pretty sure it is something to do with width.
@@ -149,8 +143,7 @@ $("#snap_button").click(function() {
 });
 
 //Show upload form field for photo
-$("#show_photo").click(function(e) {
-	e.preventDefault();
+$("#show_photo").click(function() {
 	document.location.hash = "#show_photo"
 	if(document.location.hash === "#show_photo") {
 		$("div.nophoto").removeClass("nophoto");
@@ -162,9 +155,14 @@ $("#show_photo").click(function(e) {
 });
 
 $("#sendForm").click(function(e) {
+	e.preventDefault();
+	
 	var canvas = document.getElementById("canvas");
+	var name = $("#id_name").val();
+	var zip = $("#id_zip_code").val();
+	var email = $("#id_email").val();
 	var dataURL = canvas.toDataURL();
-	$.post("/submit", {captioned_photo: dataURL });
+	$.post("/submit", {captioned_photo: dataURL, name: name, zip_code: zip, email: email  });
 })
 
 </script>
