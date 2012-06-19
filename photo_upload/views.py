@@ -59,6 +59,7 @@ def upload_raw_photo(request):
 @csrf_exempt
 def submit(request):
 	form = PhotoForm()
+	print request
 	if request.method == 'POST':
 		form = PhotoForm(request.POST or None, request.FILES or None)
 		if form.is_valid():

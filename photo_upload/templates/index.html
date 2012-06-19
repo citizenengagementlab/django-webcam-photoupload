@@ -37,6 +37,16 @@
 					{% csrf_token %}
 					<!-- csrf token ajax for photo, pass to PhotoUpload view -->
 					{{ form.non_field_errors }}
+					<div class="nophoto">
+				    	<div class="fieldWrapper">
+				        	{{ form.captioned_photo.errors }}
+				        	<label for="id_captioned_photo">Upload a photo</label>
+				        	{{ form.captioned_photo}}
+				        </div>		
+				    </div>	
+				    <div id="captioned_photo" class="fieldWrapper">
+						{{ form.captioned_photo.errors }}
+					</div>
 					<div class="fieldWrapper">
 						{{ form.name.errors }}
 						<label for="id_name">Your Name</label>
@@ -51,13 +61,6 @@
 				        {{ form.email.errors }}
 				        <label for="id_email">Your email</label>
 				        {{ form.email}}
-				    </div>	
-				    <div class="nophoto">
-					    <div class="fieldWrapper">
-					        {{ form.photo.errors }}
-					        <label for="id_captioned_photo">Upload a photo</label>
-					        {{ form.captioned_photo}}
-					    </div>		
 				    </div>						
 					<input id="sendForm" type="submit" value="Send" />
 				</form>	
@@ -135,7 +138,6 @@ function callbackCamera(response) {
 	});
 }
 
-
 //Activate upload section... todo, fix bug with image displaying again for just a moment.  Pretty sure it is something to do with width.
 $("#tab").click(function() {
 		$("#upload").animate({width: "toggle"});
@@ -146,25 +148,25 @@ $("#snap_button").click(function() {
 	webcam.snap("upload_raw_photo", "callbackCamera");	
 });
 
-
 //Show upload form field for photo
 $("#show_photo").click(function(e) {
 	e.preventDefault();
 	document.location.hash = "#show_photo"
 	if(document.location.hash === "#show_photo") {
 		$("div.nophoto").removeClass("nophoto");
+		$("div#captioned_photo").hide();
 		$("#step-1").hide();
 		$("#step-2").show();
 	document.location.hash = "#upload_photo"
 	}
 });
 
-
-$("#sendForm").click(function() {
+$("#sendForm").click(function(e) {
 	var canvas = document.getElementById("canvas");
-	var ctx = canvas.getContext("2d");
-	//How do we convert this data into part of our request and get it to be read as a request.FILES so that we can save it to our PhotoForm as captioned_photo_id.  We want to bind the data from the canvas to the id "id_captioned_photo" and have it save in our view as a request.FILES...
+	var dataURL = canvas.toDataURL();
+	$.post("/submit", {captioned_photo: dataURL });
 })
+
 </script>
 
 {%endblock%}
