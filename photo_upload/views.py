@@ -14,9 +14,9 @@ from photo_upload.forms import *
 	
 
 def index(request):
+	
     textbox = TextBox.objects.all()
     form = PhotoForm(request.POST or None)
-
     if form.is_valid():
         new_photo = form.save()
 

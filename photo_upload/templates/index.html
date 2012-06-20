@@ -19,11 +19,11 @@
 
 {%block upload_form%}
 <div id="sticky">
-	<aside id="tab"><h2>Upload +</h2></aside>
+	<aside id="tab" class="rotate-90-ie"><h2>Upload +</h2></aside>
 	<div id="upload">
 		<article id="step-1">
 			<section class="left-section">
-				<button id="snap_button">Say Cheese</button>
+				<button id="snap-button">Say Cheese</button>
 				<p>No webcam?  Go straight to our <a href="#show_photo" id="show_photo"> upload form.</a></p>
 			</section>
 			<section class="right-section">
@@ -132,13 +132,11 @@ function callbackCamera(response) {
 	
 }
 
-//Activate upload section... todo, fix bug with image displaying again for just a moment.  Pretty sure it is something to do with width.
-$("#tab").click(function() {
-		$("#upload").animate({width: "toggle"});
+$('#tab').click(function(e){
+    $(this).parent().toggleClass('active');
 });
 
-//Take picture, and instantiate callback function if successful.
-$("#snap_button").click(function() {
+$("#snap-button").click(function() {
 	webcam.snap("upload_raw_photo", "callbackCamera");	
 });
 

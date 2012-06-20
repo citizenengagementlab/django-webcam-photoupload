@@ -11,7 +11,13 @@ body #wrapper #sticky {
   position: fixed;
   z-index: 1;
   top: 0px;
-  right: 0px;
+  right: -607px;
+  -webkit-transition: right 500ms ease;
+  -moz-transition: right 500ms ease;
+  -o-transition: right 500ms ease;
+  transition: right 500ms ease;
+  width: 682px;
+  height: 280px;
 }
 body #wrapper #sticky aside#tab {
   height: 280px;
@@ -47,10 +53,10 @@ body #wrapper #sticky aside#tab h2 {
   width: 1000%;
 }
 body #wrapper #sticky #upload {
-  display: none;
-  float: right;
+  float: left;
   background: #FFF;
   box-shadow: inset 0 0 2px #000;
+  width: 600px;
 }
 body #wrapper #sticky #upload #step-1 {
   display: block;
@@ -131,6 +137,12 @@ div.nophoto {
 .errorlist {
   margin: 5px 0px;
   color: red;
+}
+.active {
+  right: 0px !important;
+}
+.rotate-90-ie {
+  filter: progid:dximagetransform.microsoft.basicimage(rotation=90);
 }
 ul#photo_grid {
   margin: 0px;
