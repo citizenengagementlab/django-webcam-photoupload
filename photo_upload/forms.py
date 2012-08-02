@@ -5,5 +5,5 @@ from photo_upload.models import *
 class PhotoForm(ModelForm):
 	class Meta:
 		model = Photo
-		exclude = {'approved','raw_photo'}
+		exclude = {'approved',}
 		

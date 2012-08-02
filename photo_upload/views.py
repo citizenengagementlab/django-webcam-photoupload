@@ -6,8 +6,6 @@ from django.core.files.base import ContentFile
 from django.conf import settings
 from django.shortcuts import render
 import json
-# import md5 - figure this out later
-
 
 from photo_upload.models import *
 from photo_upload.forms import *
@@ -44,7 +42,7 @@ def upload_raw_photo(request):
 	if request.method == 'POST':
  		raw_photo = RawPhoto()
  		raw_content_file = ContentFile(request.raw_post_data)
- 		file_name = "test.jpg" #temporary
+ 		file_name = "raw_photo.png"
  		raw_photo.photo.save(file_name, raw_content_file)
  		data = {
  			'success': True,
@@ -58,27 +56,6 @@ def upload_raw_photo(request):
 	
 @csrf_exempt
 def submit(request):
-	form = PhotoForm()
 	print request
-	if request.method == 'POST':
-		form = PhotoForm(request.POST or None, request.FILES or None)
-		if form.is_valid():
-			new_upload = form.save()
-		else:
-			print form.errors
- 	else:
- 		print form.errors
-	return HttpResponse(form.save())
-			
 
-# captioned_photo = CaptionedPhoto()
-# 		captioned_content_file = ContentFile(request.raw_post_data)
-# 		file_name = "test_final.jpg"
-# 		captioned_photo.photo.save(file_name, captioned_content_file)
-# 		data = {
-#  			'success': True,
-#  			'file_name': file_name,
-#  			'file_url': captioned_photo.photo.url,
-#  			'captioned_photo_pk': captioned_photo.pk
-#  		}			
-# 			
+			

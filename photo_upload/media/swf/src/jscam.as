@@ -18,6 +18,7 @@ import JPGEncoder;
 class JSCam {
 
 	private static var camera:Camera = null;
+	private static var display:MovieClip = null;	
 	private static var buffer:BitmapData = null;
 	private static var quality:Number = 85;
 	private static var interval = null;
@@ -57,30 +58,28 @@ class JSCam {
 			// http://www.adobe.com/support/flash/action_scripts/actionscript_dictionary/actionscript_dictionary133.html
 			camera.onStatus = function(info:Object) {
 
-			    switch (info.code) {
-			    case 'Camera.Muted':
-				ExternalInterface.call('webcam.debug', "notify", "Camera stopped");
-				break;
+		    switch (info.code) {
+		    	case 'Camera.Muted':
+						ExternalInterface.call('webcam.debug', "notify", "Camera stopped");
+						break;
 			    case 'Camera.Unmuted' :
-				ExternalInterface.call('webcam.debug', "notify", "Camera started");
-				break;
-			    }
+						ExternalInterface.call('webcam.debug', "notify", "Camera started");
+						break;
+		    }
 			}
 
 			camera.setQuality(0, 100);
 			camera.setMode(Stage.width, Stage.height, 24, false);
 
 			ExternalInterface.addCallback("capture", null, capture);
-
 			ExternalInterface.addCallback("save", null, save);
-
 			ExternalInterface.addCallback("setCamera", null, setCamera);
 			ExternalInterface.addCallback("getCameraList", null, getCameraList);
 
-			_root.attachMovie("clip", "video", 1);
-			_root.video.attachVideo(camera);
-			_root.video._x = 0;
-			_root.video._y = 0;
+			display = _root.attachMovie("clip", "video", 1);
+			display.video._x = 0;
+			display.video._y = 0;
+			display.video.attachVideo(camera);			
 
 		} else {
 			ExternalInterface.call('webcam.debug', "error", "No camera was detected.");
@@ -123,7 +122,7 @@ class JSCam {
 		}
 
 		if (0 == time) {
-			buffer.draw(_root.video);
+			buffer.draw(display.video);
 			ExternalInterface.call('webcam.onCapture');
 			ExternalInterface.call('webcam.debug', "notify", "Capturing finished.");
 		} else {
@@ -133,7 +132,6 @@ class JSCam {
 	}
 
 	public static function getCameraList():Array {
-
 		var list = new Array();
 
 		for (var i = 0, l = Camera.names.length; i < l; i++) {
@@ -148,15 +146,7 @@ class JSCam {
 			camera = Camera.get(id);
 			camera.setQuality(0, 100);
 			camera.setMode(Stage.width, Stage.height, 24, false);
-
-                        _root.removeMovieClip();
-                        _root.attachMovie("clip", "video", 1);
-                        _root.video.attachVideo(camera);
-                        _root.video._x = 0;
-                        _root.video._y = 0;
-
 			return true;
-
 		}
 		return false;
 	}
@@ -171,10 +161,10 @@ class JSCam {
 
 			if ("callback" == mode) {
 
-				for (var i = 0; i < 240; ++i) {
+				for (var i = 0; i < 640; ++i) {
 
 					var row = "";
-					for (var j=0; j < 320; ++j) {
+					for (var j=0; j < 480; ++j) {
 						row+= buffer.getPixel(j, i);
 						row+= ";";
 					}
@@ -196,7 +186,7 @@ class JSCam {
 
 					var doc = new XML();
 					doc.onLoad = function(success) {
-                        ExternalInterface.call("webcam.onSave", "done", this.toString());
+						ExternalInterface.call("webcam.onSave", "done");
 					}
 
 					sal.sendAndLoad(file, doc);
@@ -221,17 +211,17 @@ class JSCam {
 
 	private static function _stream():Void {
 
-		buffer.draw(_root.video);
+		buffer.draw(display.video);
 
 		if (null != stream) {
 			clearInterval(stream);
 		}
 
 
-		for (var i = 0; i < 240; ++i) {
+		for (var i = 0; i < 640; ++i) {
 
 			var row = "";
-			for (var j=0; j < 320; ++j) {
+			for (var j=0; j < 480; ++j) {
 				row+= buffer.getPixel(j, i);
 				row+= ";";
 			}

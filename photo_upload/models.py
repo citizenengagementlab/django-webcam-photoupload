@@ -25,7 +25,6 @@ class Photo(models.Model):
 	name = models.CharField(max_length=50)
 	zip_code = models.CharField(max_length=5)
 	email = models.EmailField(max_length=75)
-	raw_photo = models.ForeignKey(RawPhoto, related_name='raw_photo')
 	captioned_photo = models.ImageField(upload_to='captioned/', storage=media)
 	approved = models.BooleanField()
 
