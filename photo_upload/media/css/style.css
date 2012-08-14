@@ -106,11 +106,17 @@ body #wrapper #sticky #upload #step-2 .left-section {
 body #wrapper #sticky #upload #step-2 .left-section form {
   margin-top: 30px;
 }
+body #wrapper #sticky #upload #step-2 .left-section form input.error {
+  border-color: red;
+}
 body #wrapper #sticky #upload #step-2 .left-section form input[type="text"] {
   width: 80%;
 }
 body #wrapper #sticky #upload #step-2 .left-section form label {
   display: block;
+}
+body #wrapper #sticky #upload #step-2 .left-section form label.error {
+  color: red;
 }
 body #wrapper #sticky #upload #step-2 .right-section {
   width: 64%;
@@ -224,11 +230,17 @@ td {
   vertical-align: top;
   font-weight: normal;
 }
-input,
+input[type="text"],
 textarea,
 select {
   font-size: 110%;
   line-height: 1.1;
+  border: 1px solid grey;
+  border-radius: 2px;
+}
+label {
+  font-weight: normal;
+  margin-bottom: 5px;
 }
 abbr,
 acronym {

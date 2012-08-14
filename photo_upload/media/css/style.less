@@ -132,13 +132,20 @@ body {
 						left:20px;
 							
 						form {	
-							margin-top:30px;	
+							margin-top:30px;
+							input.error {
+								border-color:red;
+							}
 							input[type="text"] {
 								width:80%;
 							}
 							label {
 								display:block;
+								&.error {
+									color:red;
+								}
 							}
+
 						}
 					}
 					.right-section {
@@ -246,10 +253,17 @@ caption, th, td
 	font-weight: normal;
 }
 
-input, textarea, select
+input[type="text"], textarea, select
 {
 	font-size: 110%;
 	line-height: 1.1;
+	border: 1px solid grey;
+	border-radius: 2px;
+}
+
+label {
+	font-weight:normal;
+	margin-bottom:5px;
 }
 
 abbr, acronym
