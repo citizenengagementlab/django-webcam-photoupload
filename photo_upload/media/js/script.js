@@ -7,7 +7,7 @@ webcam.set_stealth(false);
 webcam.set_hook('onComplete', 'callbackCamera');
     
 //Render webcam
-$("#camera").html(webcam.get_html(350, 260));
+$("#camera").html(webcam.get_html(640, 480));
 
 //Switches uploads steps
 function switchStep() {
@@ -15,48 +15,122 @@ function switchStep() {
     $("#step-2").show();
 }
 
+//wrap text on spaces to max width
+function wrapWords(context, text, maxWidth) {
+    var words = text.split(' '),
+        lines = [],
+        line = "";
+    if (context.measureText(text).width < maxWidth) {
+        return [text];
+    }
+    while (words.length > 0) {
+        if (context.measureText(line + words[0]).width < maxWidth) {
+            line += words.shift() + " ";
+        } else {
+            lines.push(line);
+            line = "";
+        }
+        if (words.length === 0) {
+            lines.push(line);
+        }
+    }
+    return lines;
+}
+
+//wrap text on linebreaks
+function wrapLines(context,text,maxWidth) {
+    var sections = text.split('\n'),
+        lines = [],
+        line = "";
+    for (var i = 0; i < sections.length; i++) {
+        var wrapped_lines = wrapWords(context,sections[i],maxWidth);
+        for (var j = 0; j < wrapped_lines.length; j++) {
+            lines.push(wrapped_lines[j]);
+        }
+    }
+    return lines;
+}
+
+//redraw functions for text
+function drawText(context, options) {
+    options = options || {name: $('#id_name').val(),
+                          location: $('#id_zip_code').val(),
+                          message : $('#id_message').val(),
+                          logo_url: "/static/tmp/zombo.png"};
+    //note that logo_url must be in the same host as this script, otherwise we can't do canvas.toDataURL()
+    //overlay a transparent rect to draw text on
+    context.fillStyle = "rgba(255, 255, 255, 0.5)";
+    context.fillRect(0,380,640,100);
+
+    //name & location
+    var name_text = options.name+" - "+options.location;
+    context.fillStyle = "rgba(0, 0, 0, 1)";
+    context.font = "24px Helvetica";
+    context.fillText(name_text, 10, 410);
+
+    //message
+    if (options.message !== "undefined") {
+        var msg_text = options.message;
+        var fontSize = 18;
+        var textWrapWidth = 500; //for text wrap
+        var heightOffset = 415; //starting height
+        context.font = fontSize+"px Helvetica";
+        
+        var lines = wrapLines(context, msg_text, textWrapWidth - parseInt(fontSize,0));
+        lines.forEach(function(line, i) {
+            context.fillText(line, 10, heightOffset + ((i + 1) * parseInt(fontSize,0)));
+        });
+    }
+
+    //logo
+    if (options.logo_url !== "undefined") {
+        var logo = new Image();
+        logo.src = options.logo_url;
+        logo.onload = function() {
+            context.drawImage(logo,640-logo.width-10,480-logo.height-10,logo.width,logo.height);
+        };
+    }
+}
+
+function drawPhoto(context,image_src, callback) {
+    var img = new Image();
+    img.src = image_src;
+    img.onload = function() {
+        context.drawImage(img, 0, 0, 640, 480);
+
+        if (typeof callback !== "undefined") {
+            callback(context);
+        }
+    };
+}
+
+function redraw(){
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+
+    drawPhoto(context,$('#id_raw_photo_url').val(),drawText);
+}
+
 //Callback function for jpegcam - invokes switchStep, creates canvas, and adds jpeg image to canvas
 function callbackCamera(response) {
     var data = JSON.parse(response);
     //going from step 1 to 2 in the upload form.
     switchStep();
-    //save raw_photo_pk to form
-    $('#id_raw_photo').val(data.raw_photo_pk);
+    //save photo pk and url form
+    $('#id_raw_photo_pk').val(data.raw_photo_pk);
+    $('#id_raw_photo_url').val(data.file_url);
 
-    //canvas
+    //draw image to canvas
     var canvas = document.getElementById("canvas");
     var context = canvas.getContext("2d");
 
-    //Making an image object to draw to my canvas
-    var img = new Image();
-    img.src = data.file_url;
-    img.onload = function() {
-        context.drawImage(img, 0, 0, 350, 260);
-
-        //overlay a transparent rect for their info
-        context.fillStyle = "rgba(255, 255, 255, 0.5)";
-        context.fillRect(0,225,350,100);
-    };
+    drawPhoto(context,data.file_url);
 }
 
-//redraw functions for text
-$("#id_name").change(function() {
-    var canvas = document.getElementById("canvas");
-    var context = canvas.getContext("2d");
-
-    context.fillStyle = "rgba(0, 0, 0, 1)";
-    context.font = "24px Helvetica";
-    context.fillText(this.value, 5, 250);
-});
-    
-$("#id_zip_code").change(function() {
-    var canvas = document.getElementById("canvas");
-    var context = canvas.getContext("2d");
-
-    context.fillStyle = "rgba(0, 0, 0, 1)";
-    context.font = "16px Helvetica";
-    context.fillText(this.value, 100, 250);
-});
+//update image on text fields change
+$("#id_name").change(redraw);
+$("#id_zip_code").change(redraw);
+$("#id_message").change(redraw);
 
 //button click handlers
 $('#tab').click(function(e){
@@ -95,7 +169,7 @@ $("#sendForm").click(function(e) {
          name:$('#id_name').val(),
          zip_code: $('#id_zip_code').val(),
          email: $('#id_email').val(),
-         raw_photo_id: $('#id_raw_photo').val()
+         raw_photo_pk: $('#id_raw_photo_pk').val()
         },
         error: function(jqXHR, textStatus) {
             var errors = $.parseJSON(jqXHR.responseText);
@@ -104,7 +178,6 @@ $("#sendForm").click(function(e) {
 
         },
         success: function(jqXHR, textStatus, errorThrown) {
-            console.log('success');
             $('#tab').click();
             $('#tab').css('background','green');
             $('#tab h2').html('Thanks!');

@@ -69,13 +69,14 @@
 						<label for="id_message">Your Message</label>
 						{{ form.message }}
 					</div>
-				    <input id="id_raw_photo" name="raw_photo" type="hidden" />
+					<input id="id_raw_photo_url" name="raw_photo_url" type="hidden" />
+				    <input id="id_raw_photo_pk" name="raw_photo_pk" type="hidden" />
 					<input id="sendForm" type="submit" value="Send" />
 					<a href="/privacy/">Privacy Policy</a>
 				</form>	
 			</section>
 			<section class="right-section">
-				<canvas id="canvas" width="350" height="260"></canvas>
+				<canvas id="canvas" width="640" height="480"></canvas>
 			</section>
 		</article>
 	</div>

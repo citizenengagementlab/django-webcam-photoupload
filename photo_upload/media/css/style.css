@@ -11,12 +11,12 @@ body #wrapper #sticky {
   position: fixed;
   z-index: 1;
   top: 0px;
-  right: -607px;
+  right: -850px;
   -webkit-transition: right 500ms ease;
   -moz-transition: right 500ms ease;
   -o-transition: right 500ms ease;
   transition: right 500ms ease;
-  width: 682px;
+  width: 932px;
   height: 280px;
 }
 body #wrapper #sticky aside#tab {
@@ -56,13 +56,13 @@ body #wrapper #sticky #upload {
   float: left;
   background: #FFF;
   box-shadow: inset 0 0 2px #000;
-  width: 600px;
+  width: 850px;
 }
 body #wrapper #sticky #upload #step-1 {
   display: block;
 }
 body #wrapper #sticky #upload #step-1 .left-section {
-  width: 32%;
+  width: 131px;
   float: left;
   margin-left: 10px;
   margin-top: 50px;
@@ -82,13 +82,11 @@ body #wrapper #sticky #upload #step-1 .left-section p {
   font-size: 11px;
 }
 body #wrapper #sticky #upload #step-1 .right-section {
-  width: 64%;
+  width: 669px;
   padding: 1%;
   float: right;
 }
 body #wrapper #sticky #upload #step-1 .right-section #camera {
-  width: 350px;
-  height: 260px;
   border: 15px solid #333;
   background: #eee;
   -webkit-border-radius: 20px;
@@ -99,7 +97,7 @@ body #wrapper #sticky #upload #step-2 {
   display: none;
 }
 body #wrapper #sticky #upload #step-2 .left-section {
-  width: 34%;
+  width: 131px;
   float: left;
   position: relative;
   left: 20px;
@@ -115,7 +113,7 @@ body #wrapper #sticky #upload #step-2 .left-section form input[type="text"] {
 }
 body #wrapper #sticky #upload #step-2 .left-section form textarea {
   width: 80%;
-  height: 30px;
+  height: 75px;
 }
 body #wrapper #sticky #upload #step-2 .left-section form label {
   display: block;
@@ -124,13 +122,11 @@ body #wrapper #sticky #upload #step-2 .left-section form label.error {
   color: red;
 }
 body #wrapper #sticky #upload #step-2 .right-section {
-  width: 64%;
+  width: 669px;
   padding: 1%;
   float: right;
 }
 body #wrapper #sticky #upload #step-2 .right-section #canvas {
-  width: 350px;
-  height: 260px;
   border: 15px solid #333;
   background: #eee;
   -webkit-border-radius: 20px;

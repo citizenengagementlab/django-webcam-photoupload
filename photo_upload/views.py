@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse,HttpResponseBadRequest
+from django.http import HttpResponse,HttpResponseBadRequest,HttpResponseServerError
 from django.core.files.base import ContentFile
 from django.conf import settings
 from django.shortcuts import render
@@ -81,7 +81,7 @@ def submit(request,slug):
     #create the django photo object
     try:
         campaign = PhotoCampaign.objects.get(slug=slug)
-        raw_photo = RawPhoto.objects.get(id=request.POST.get('raw_photo_id'))
+        raw_photo = RawPhoto.objects.get(id=request.POST.get('raw_photo_pk'))
     except PhotoCampaign.DoesNotExist:
         resp = {'message':'no such campaign %s' % slug}
         return HttpResponseServerError(json.dumps(resp),mimetype="application/json")
