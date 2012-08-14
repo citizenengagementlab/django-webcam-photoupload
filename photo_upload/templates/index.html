@@ -6,10 +6,8 @@
 <ul id="photo_grid">
 	{{raw_post}}
 		<li class="captioned_photo first">
-		{%for text in textbox%}
-			<h2>{{text.title}}</h2>
-			<p>{{text.description}}</p>
-		{%endfor%}
+		<h2>{{campaign.title}}</h2>
+		<p>{{campaign.description}}</p>
 		</li>
 	{%for photo in photos%}
 		<li class="captioned_photo"><img src="{{STATIC_URL}}{{photo.captioned_photo}}" /></li>
@@ -23,8 +21,13 @@
 	<div id="upload">
 		<article id="step-1">
 			<section class="left-section">
-				<button id="snap-button">Say Cheese</button>
-				<p>Don't have a webcam?<br>Go straight to our <a href="#show_photo" id="show_photo"> upload form.</a></p>
+				<h2>Use your webcam to take a photo</h2>
+				<ol>
+					<li>Click &#10004; to allow camera access &rarr;</li>
+					<li>Smile for the camera &#9786;</li>
+					<li>Click the button &darr;</p>
+				</ol>
+				<button id="snap-button">Take Photo</button>
 			</section>
 			<section class="right-section">
 					<div id="camera" />
@@ -62,8 +65,13 @@
 				        <label for="id_email">Your email</label>
 				        {{ form.email}}
 				    </div>
+				   	<div class="fieldWrapper">
+						<label for="id_message">Your Message</label>
+						{{ form.message }}
+					</div>
 				    <input id="id_raw_photo" name="raw_photo" type="hidden" />
 					<input id="sendForm" type="submit" value="Send" />
+					<a href="/privacy/">Privacy Policy</a>
 				</form>	
 			</section>
 			<section class="right-section">

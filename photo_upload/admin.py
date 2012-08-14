@@ -1,12 +1,13 @@
 from photo_upload.models import *
 from django.contrib import admin
 
-class TextBoxAdmin(admin.ModelAdmin):
+class PhotoCampaignAdmin(admin.ModelAdmin):
+	prepopulated_fields = {"slug": ("title",)}
 	list_display = ['title','description']
 
 class PhotoAdmin(admin.ModelAdmin):
+	list_filter = ('approved','campaign')
 	list_display = ['name','zip_code','email']
 
-
+admin.site.register(PhotoCampaign, PhotoCampaignAdmin)
 admin.site.register(Photo,PhotoAdmin)
-admin.site.register(TextBox, TextBoxAdmin)

@@ -1,10 +1,14 @@
 from django.db import models
-from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
-class TextBox(models.Model):
+media = FileSystemStorage()
+
+class PhotoCampaign(models.Model):
 	title = models.CharField(max_length=50)
-	description = models.CharField(max_length=460)
+	slug = models.SlugField()
+	description = models.TextField()
+	default_message = models.TextField(null=True,blank=True)
+	example_photo = models.ImageField(upload_to='examples/',null=True,blank=True)
 	
 	def __unicode__(self):
 		return '%s, %s' % (self.title, self.description,)
@@ -15,19 +19,18 @@ class TextBox(models.Model):
 	def get_description(self):
 		return '%s' % self.description
 
-
-media = FileSystemStorage()
-
 class RawPhoto(models.Model):
 	photo = models.ImageField(upload_to='raws/', storage=media)
 
 class Photo(models.Model):
+	campaign = models.ForeignKey(PhotoCampaign)
 	name = models.CharField(max_length=50)
 	zip_code = models.CharField(max_length=5)
 	email = models.EmailField(max_length=75)
+	message = models.TextField(null=True,blank=True)
+	raw_photo = models.ForeignKey(RawPhoto, related_name="original_photo")
 	captioned_photo = models.ImageField(upload_to='captioned/', storage=media)
 	approved = models.BooleanField()
 
 	def __unicode__(self):
 		return "%s, %s, %s" % (self.name, self.zip_code, self.email,)
-	

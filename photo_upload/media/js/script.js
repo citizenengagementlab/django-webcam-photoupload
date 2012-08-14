@@ -2,7 +2,7 @@
 
 webcam.set_swf_url('../static/swf/webcam.swf');
 webcam.set_shutter_sound(true, "../static/mp3/shutter.mp3");
-webcam.set_quality(95);
+webcam.set_quality(90);
 webcam.set_stealth(false);
 webcam.set_hook('onComplete', 'callbackCamera');
     
@@ -20,31 +20,45 @@ function callbackCamera(response) {
     var data = JSON.parse(response);
     //going from step 1 to 2 in the upload form.
     switchStep();
+    //save raw_photo_pk to form
+    $('#id_raw_photo').val(data.raw_photo_pk);
+
     //canvas
     var canvas = document.getElementById("canvas");
-    var ctx = canvas.getContext("2d");
+    var context = canvas.getContext("2d");
 
     //Making an image object to draw to my canvas
     var img = new Image();
     img.src = data.file_url;
     img.onload = function() {
-        ctx.drawImage(img, 0, 0, 350, 260);
-    };
-    
-    $("#id_name").change(function() {
-        ctx.drawImage(img, 0, 0, 350, 260);
-        ctx.font = "36px Helvetica";
-        ctx.fillText(this.value, 0, 80);
-    });
-    
-    $("#id_zip_code").change(function() {
-        ctx.drawImage(img, 0, 0, 350, 260);
-        ctx.font = "24px Helvetica";
-        ctx.fillText(this.value, 0, 150);
-    });
+        context.drawImage(img, 0, 0, 350, 260);
 
+        //overlay a transparent rect for their info
+        context.fillStyle = "rgba(255, 255, 255, 0.5)";
+        context.fillRect(0,225,350,100);
+    };
 }
 
+//redraw functions for text
+$("#id_name").change(function() {
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+
+    context.fillStyle = "rgba(0, 0, 0, 1)";
+    context.font = "24px Helvetica";
+    context.fillText(this.value, 5, 250);
+});
+    
+$("#id_zip_code").change(function() {
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+
+    context.fillStyle = "rgba(0, 0, 0, 1)";
+    context.font = "16px Helvetica";
+    context.fillText(this.value, 100, 250);
+});
+
+//button click handlers
 $('#tab').click(function(e){
     $(this).parent().toggleClass('active');
 });
@@ -65,16 +79,6 @@ $("#show_photo").click(function() {
 }
 });
 
-/*
-var addToCanvas = function(text) {
-    ctx.fillStyle = "#000";
-    ctx.font = "40px Helvetica";
-    ctx.globalAlpha=1;
-    ctx.fillText(text, 40,80);
-}*/
-
-
-//TODO: Connect this to same submit as other submit request
 $("#sendForm").click(function(e) {
     e.preventDefault();
     var canvas = document.getElementById("canvas");
@@ -84,7 +88,7 @@ $("#sendForm").click(function(e) {
     $('label').removeClass('error');
 
     $.ajax({type: 'POST',
-        url:"/submit",
+        url:"submit",
         contentType: "application/json",
         dataType: "json",
         data: {captioned_photo: dataURL,
@@ -94,14 +98,18 @@ $("#sendForm").click(function(e) {
          raw_photo_id: $('#id_raw_photo').val()
         },
         error: function(jqXHR, textStatus) {
-            console.log('error');
             var errors = $.parseJSON(jqXHR.responseText);
-            console.log(errors);
             $('input#id_'+errors.field).addClass('error');
             $('label[for="id_'+errors.field+'"]').addClass('error');
+
         },
         success: function(jqXHR, textStatus, errorThrown) {
             console.log('success');
+            $('#tab').click();
+            $('#tab').css('background','green');
+            $('#tab h2').html('Thanks!');
+            $('#tab').unbind();
+            //add it to the main photo flow?
         }
     });
 });

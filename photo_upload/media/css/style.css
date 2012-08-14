@@ -62,9 +62,10 @@ body #wrapper #sticky #upload #step-1 {
   display: block;
 }
 body #wrapper #sticky #upload #step-1 .left-section {
-  width: 34%;
+  width: 32%;
   float: left;
-  margin-top: 115px;
+  margin-left: 10px;
+  margin-top: 50px;
 }
 body #wrapper #sticky #upload #step-1 .left-section button {
   width: 150px;
@@ -73,7 +74,7 @@ body #wrapper #sticky #upload #step-1 .left-section button {
   font-size: 20px;
   text-align: center;
   display: block;
-  margin: 0 auto;
+  margin: 10px auto;
 }
 body #wrapper #sticky #upload #step-1 .left-section p {
   text-align: center;
@@ -111,6 +112,10 @@ body #wrapper #sticky #upload #step-2 .left-section form input.error {
 }
 body #wrapper #sticky #upload #step-2 .left-section form input[type="text"] {
   width: 80%;
+}
+body #wrapper #sticky #upload #step-2 .left-section form textarea {
+  width: 80%;
+  height: 30px;
 }
 body #wrapper #sticky #upload #step-2 .left-section form label {
   display: block;
@@ -210,8 +215,11 @@ img {
 legend {
   color: #000;
 }
-li {
+ul li {
   list-style: none;
+}
+ol {
+  padding: 0px 10px 0px 30px;
 }
 sup {
   vertical-align: text-top;
@@ -231,7 +239,6 @@ td {
   font-weight: normal;
 }
 input[type="text"],
-textarea,
 select {
   font-size: 110%;
   line-height: 1.1;

@@ -91,9 +91,10 @@ body {
 					display:block;
 						
 					.left-section {
-						width:34%;
+						width:32%;
 						float:left;
-						margin-top:115px;
+						margin-left:10px;
+						margin-top:50px;
 							
 						button {
 							width:150px;
@@ -102,7 +103,7 @@ body {
 							font-size:20px;
 							text-align:center;
 							display:block;
-							margin:0 auto;
+							margin:10px auto;
 								
 						}
 						p {
@@ -139,13 +140,16 @@ body {
 							input[type="text"] {
 								width:80%;
 							}
+							textarea {
+								width:80%;
+								height:30px;
+							}
 							label {
 								display:block;
 								&.error {
 									color:red;
 								}
 							}
-
 						}
 					}
 					.right-section {
@@ -234,7 +238,9 @@ fieldset,img { border: 0; }
 
 legend { color: #000; }
 
-li { list-style: none; }
+ul li { list-style: none; }
+
+ol { padding:0px 10px 0px 30px; }
 
 sup { vertical-align: text-top; }
 
@@ -253,7 +259,7 @@ caption, th, td
 	font-weight: normal;
 }
 
-input[type="text"], textarea, select
+input[type="text"], select
 {
 	font-size: 110%;
 	line-height: 1.1;
