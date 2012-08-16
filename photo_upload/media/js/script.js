@@ -1,3 +1,7 @@
+//TODO:  Creating a blank global variable to start this seems like a bad practice, but I'm not sure of a better
+//solution.  Refactor this soon.
+var citystate = "";
+
 //Webcam options
 
 webcam.set_swf_url('../static/swf/webcam.swf');
@@ -14,6 +18,29 @@ function switchStep() {
     $("#step-1").hide();
     $("#step-2").show();
 }
+
+
+//Convert ZIP code to state, draw to canvas
+function zipLookup(zip) {
+    $.ajax({
+        type: 'get',
+        url: '../usps/zip_lookup',
+        data: {
+            zip: zip
+        },
+        success: function(d) {
+            //TODO:  tie this into form upload so correct ZIP is required
+            if (d.city === undefined || d.state === undefined) {
+                $('input#id_zip_code').addClass('error');
+            } else {
+                window.citystate = d.city + ", " + d.state;
+                $('input#id_zip_code').removeClass('error');
+                redraw();
+            }
+        }
+    })
+}
+
 
 //wrap text on spaces to max width
 function wrapWords(context, text, maxWidth) {
@@ -53,8 +80,9 @@ function wrapLines(context,text,maxWidth) {
 
 //redraw functions for text
 function drawText(context, options) {
+    var citystate = window.citystate;
     options = options || {name: $('#id_name').val(),
-                          location: $('#id_zip_code').val(),
+                          location: citystate,
                           message : $('#id_message').val(),
                           logo_url: "/static/tmp/zombo.png"};
     //note that logo_url must be in the same host as this script, otherwise we can't do canvas.toDataURL()
@@ -67,7 +95,6 @@ function drawText(context, options) {
     context.fillStyle = "rgba(0, 0, 0, 1)";
     context.font = "24px Helvetica";
     context.fillText(name_text, 10, 410);
-
     //message
     if (options.message !== "undefined") {
         var msg_text = options.message;
@@ -129,7 +156,10 @@ function callbackCamera(response) {
 
 //update image on text fields change
 $("#id_name").change(redraw);
-$("#id_zip_code").change(redraw);
+$("#id_zip_code").change(function() {
+    zip = $(this).val();
+    zipLookup(zip);
+});
 $("#id_message").change(redraw);
 
 //button click handlers
@@ -152,6 +182,7 @@ $("#show_photo").click(function() {
     document.location.hash = "#upload_photo";
 }
 });
+
 
 $("#sendForm").click(function(e) {
     e.preventDefault();
