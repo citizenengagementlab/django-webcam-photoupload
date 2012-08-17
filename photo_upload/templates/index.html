@@ -28,10 +28,16 @@
 					<li>Click the button &darr;</p>
 				</ol>
 				<button id="snap-button">Take Photo</button>
+				<p>No webcam?  Upload a file!</p>
+				<form method="POST" action="upload_raw_photo" enctype="multipart/form-data">
+					{{raw_form.as_ul}}
+					<input id="uploadDirect" type="submit" value="Go!" />
+				</form>
 			</section>
 			<section class="right-section">
-					<div id="camera" />
+					<div id="camera"></div>
 			</section>
+
 		</article>
 		
 		<article id ="step-2">

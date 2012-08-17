@@ -1,6 +1,6 @@
 //TODO:  Creating a blank global variable to start this seems like a bad practice, but I'm not sure of a better
 //solution.  Refactor this soon.
-var citystate = "";
+
 
 //Webcam options
 
@@ -27,6 +27,14 @@ function zipLookup(zip) {
         url: '../usps/zip_lookup',
         data: {
             zip: zip
+        },
+        error: function(d) {
+            options = options || {name: $('#id_name').val(),
+                      location: citystate,
+                      message : $('#id_message').val(),
+                      logo_url: "/static/tmp/zombo.png"};
+            redraw();
+            console.log("okay");
         },
         success: function(d) {
             //TODO:  tie this into form upload so correct ZIP is required
@@ -91,7 +99,14 @@ function drawText(context, options) {
     context.fillRect(0,380,640,100);
 
     //name & location
-    var name_text = options.name+" - "+options.location;
+    if (options === undefined) {
+        var name_text = "";
+    } else if (options.location === undefined) {
+        var name_text = options.name;
+    } else {
+        var name_text = options.name+" - "+options.location;        
+    }
+    console.log(name_text);
     context.fillStyle = "rgba(0, 0, 0, 1)";
     context.font = "24px Helvetica";
     context.fillText(name_text, 10, 410);
@@ -183,6 +198,39 @@ $("#show_photo").click(function() {
 }
 });
 
+$("#uploadDirect").click(function(e) {
+        //this is how you upload files via ajax, I guess?
+        e.preventDefault();
+        data = new FormData();
+        data.append('photo', $("#id_photo")[0].files[0]);
+
+    $.ajax({
+            type: 'POST',
+            url:"upload_raw_photo",
+            processData:false,
+            contentType: false,
+            dataType: false,
+            data: data,
+        error: function(data) {
+            alert('fail')
+        },
+        success: function(data) {
+            console.log(data);
+            switchStep();
+                $('#id_raw_photo_pk').val(data.raw_photo_pk);
+                $('#id_raw_photo_url').val(data.file_url);
+
+                //draw image to canvas
+                var canvas = document.getElementById("canvas");
+                var context = canvas.getContext("2d");
+
+             drawPhoto(context,data.file_url);
+        }
+    });
+
+
+
+    });
 
 $("#sendForm").click(function(e) {
     e.preventDefault();

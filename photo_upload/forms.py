@@ -7,3 +7,6 @@ class PhotoForm(ModelForm):
 		model = Photo
 		exclude = {'approved',}
 		
+class RawPhotoForm(ModelForm):
+	class Meta:
+		model = RawPhoto

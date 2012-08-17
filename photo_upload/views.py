@@ -21,11 +21,12 @@ def index(request):
 def campaign_render(request,slug):
     campaign = get_object_or_404(PhotoCampaign,slug=slug)
     form = PhotoForm(request.POST or None)
+    raw_form = RawPhotoForm(request.POST or None)
     if form.is_valid():
         new_photo = form.save()
 
     response_data = {
-        'form': form
+        'form': form,
     }
 
     form = PhotoForm(request.POST or None, request.FILES or None)
@@ -38,6 +39,7 @@ def campaign_render(request,slug):
     context = {
         "photos": Photo.objects.filter(campaign=campaign,approved=True),
         'form': form,
+        'raw_form': raw_form,
         "campaign": campaign,
     }
 
@@ -47,7 +49,10 @@ def campaign_render(request,slug):
 def upload_raw_photo(request,slug):
     if request.method == 'POST':
         raw_photo = RawPhoto()
-        raw_content_file = ContentFile(request.raw_post_data)
+        if request.FILES:
+            raw_content_file = request.FILES['photo']
+        else:
+            raw_content_file = ContentFile(request.raw_post_data)
         file_name = "raw_photo.png"
         raw_photo.photo.save(file_name, raw_content_file)
         data = {
