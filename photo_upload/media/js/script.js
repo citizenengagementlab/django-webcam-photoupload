@@ -92,7 +92,7 @@ function drawText(context, options) {
     options = options || {name: $('#id_name').val(),
                           location: citystate,
                           message : $('#id_message').val(),
-                          logo_url: "/static/tmp/zombo.png"};
+                          logo_url: logo_url};
     //note that logo_url must be in the same host as this script, otherwise we can't do canvas.toDataURL()
     //overlay a transparent rect to draw text on
     context.fillStyle = "rgba(255, 255, 255, 0.5)";

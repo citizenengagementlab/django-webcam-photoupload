@@ -6,6 +6,7 @@ media = FileSystemStorage()
 class PhotoCampaign(models.Model):
 	title = models.CharField(max_length=50)
 	slug = models.SlugField()
+	logo = models.ImageField(upload_to='logos/', null=True, blank=True)
 	description = models.TextField()
 	default_message = models.TextField(null=True,blank=True)
 	example_photo = models.ImageField(upload_to='examples/',null=True,blank=True)

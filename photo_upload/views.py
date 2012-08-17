@@ -21,6 +21,7 @@ def index(request):
 def campaign_render(request,slug):
     campaign = get_object_or_404(PhotoCampaign,slug=slug)
     form = PhotoForm(request.POST or None)
+    logo = PhotoCampaign.objects.get().logo
     raw_form = RawPhotoForm(request.POST or None)
     if form.is_valid():
         new_photo = form.save()
@@ -41,6 +42,7 @@ def campaign_render(request,slug):
         'form': form,
         'raw_form': raw_form,
         "campaign": campaign,
+        'logo': logo,
     }
 
     return render(request, "index.html", dictionary=context)

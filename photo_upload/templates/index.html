@@ -90,6 +90,12 @@
 {%endblock%}
 
 {%block extra_script%}
+<script type="text/javascript">
+
+var logo_url = "{{MEDIA_URL}}{{logo}}";
+
+
+</script>
 {{block.super}}
 <script src="{{STATIC_URL}}js/libs/webcam.js"></script>
 <script src="{{STATIC_URL}}js/script.js"></script>
