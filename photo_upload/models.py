@@ -33,5 +33,9 @@ class Photo(models.Model):
 	captioned_photo = models.ImageField(upload_to='captioned/', storage=media)
 	approved = models.BooleanField()
 
+	def final_photo(self):
+		return '<img src="/media/%s" width="320" height="240" />' % self.captioned_photo
+	final_photo.allow_tags = True
+		
 	def __unicode__(self):
 		return "%s, %s, %s" % (self.name, self.zip_code, self.email,)

@@ -7,7 +7,8 @@ class PhotoCampaignAdmin(admin.ModelAdmin):
 
 class PhotoAdmin(admin.ModelAdmin):
 	list_filter = ('approved','campaign')
-	list_display = ['name','zip_code','email']
+	list_display = ['name','zip_code','email', 'final_photo','approved']
+	list_editable = ['approved',]
 
 admin.site.register(PhotoCampaign, PhotoCampaignAdmin)
 admin.site.register(Photo,PhotoAdmin)
