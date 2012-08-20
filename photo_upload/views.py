@@ -100,6 +100,7 @@ def submit(request,slug):
     new_photo = Photo.objects.create(name=request.POST.get('name'),
                                     zip_code=request.POST.get('zip_code'),
                                     email=request.POST.get('email'),
+                                    message = request.POST.get('message'),
                                     campaign=campaign,
                                     raw_photo=raw_photo)
     try:

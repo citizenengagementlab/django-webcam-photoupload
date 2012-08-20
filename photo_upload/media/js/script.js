@@ -248,6 +248,7 @@ $("#sendForm").click(function(e) {
          name:$('#id_name').val(),
          zip_code: $('#id_zip_code').val(),
          email: $('#id_email').val(),
+         message: $('#id_message').val(),
          raw_photo_pk: $('#id_raw_photo_pk').val()
         },
         error: function(jqXHR, textStatus) {
