@@ -9,6 +9,12 @@ if ( !Array.prototype.forEach ) {
   }
 }
 
+//lazy load
+$("img.lazy").lazyload({
+    effect       : "fadeIn"
+});
+
+
 //Webcam options
 
 webcam.set_swf_url('../static/swf/webcam.swf');

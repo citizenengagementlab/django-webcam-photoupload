@@ -10,7 +10,7 @@
 		<p>{{campaign.description}}</p>
 		</li>
 	{%for photo in photos%}
-		<li class="captioned_photo"><img src="{{STATIC_URL}}{{photo.captioned_photo}}" /></li>
+		<li class="captioned_photo"><img class="lazy" src="img/grey.gif" data-original="{{STATIC_URL}}{{photo.captioned_photo}}" /></li>
 	{%endfor%}
 </ul>
 {%endblock%}
@@ -99,11 +99,12 @@
 
 
 <script type="text/javascript">
-
+//passing the logo to our Javascript from our photo object - might be a more proper way to do this?
 var logo_url = "{{MEDIA_URL}}{{logo}}";
-
 </script>
+
 {{block.super}}
+<script src="{{STATIC_URL}}js/libs/jquery.lazyload.min.js"></script>
 <script src="{{STATIC_URL}}js/libs/webcam.js"></script>
 <script src="{{STATIC_URL}}js/script.js"></script>
 
