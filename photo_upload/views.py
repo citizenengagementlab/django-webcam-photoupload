@@ -51,7 +51,7 @@ def campaign_render(request,slug):
 def upload_raw_photo(request,slug):
     if request.method == 'POST':
         raw_photo = RawPhoto()
-        if request.FILES:
+        if request.FILES and request.FILES['photo']:
             raw_content_file = request.FILES['photo']
         else:
             raw_content_file = ContentFile(request.raw_post_data)
@@ -65,7 +65,7 @@ def upload_raw_photo(request,slug):
         }
     else:
         data = {'success': False, 'message':"must post to this url"}
-    return HttpResponse(json.dumps(data),mimetype="application/json")
+    return HttpResponse(json.dumps(data),mimetype="text/html")
     
 @csrf_exempt
 def submit(request,slug):

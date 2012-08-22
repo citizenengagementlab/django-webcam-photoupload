@@ -17,7 +17,7 @@
 
 {%block upload_form%}
 <div id="sticky">
-	<aside id="tab" class="rotate-90-ie"><h2>Upload +</h2></aside>
+	<aside id="tab"><h2 >Upload +</h2></aside>
 	<div id="upload">
 		<article id="step-1">
 			<section class="left-section">
@@ -29,10 +29,14 @@
 				</ol>
 				<button id="snap-button">Take Photo</button>
 				<p>No webcam?  Upload a file!</p>
-				<form method="POST" action="upload_raw_photo" enctype="multipart/form-data">
+				<div id="file-uploader"></div> 
+				<form id="upload_photo" method="POST" action="upload_raw_photo" enctype="multipart/form-data">
 					{{raw_form.as_ul}}
 					<input id="uploadDirect" type="submit" value="Go!" />
 				</form>
+		
+	
+		
 			</section>
 			<section class="right-section">
 					<div id="camera"></div>
@@ -90,16 +94,27 @@
 {%endblock%}
 
 {%block extra_script%}
+
+
+
+
 <script type="text/javascript">
 
 var logo_url = "{{MEDIA_URL}}{{logo}}";
-
 
 </script>
 {{block.super}}
 <script src="{{STATIC_URL}}js/libs/webcam.js"></script>
 <script src="{{STATIC_URL}}js/script.js"></script>
-<!--[if IE]><script src="{{STATIC_URL}}js/libs/excanvas.compiled.js"></script><![endif]-->
+
+<!--[if lt IE 9]>
+	<script src="{{STATIC_URL}}js/libs/flashcanvas.js"></script>
+<![endif]-->
+
+<!--[if IE]>
+	<script src="{{STATIC_URL}}js/libs/fileuploader.js"></script>
+	<script src="{{STATIC_URL}}js/ie.js"></script>
+<![endif]-->
 {%endblock%}
 
 

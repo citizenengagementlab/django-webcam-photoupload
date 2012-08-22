@@ -1,6 +1,13 @@
-//TODO:  Creating a blank global variable to start this seems like a bad practice, but I'm not sure of a better
-//solution.  Refactor this soon.
 
+//Adding forEach support for IE...
+
+if ( !Array.prototype.forEach ) {
+  Array.prototype.forEach = function(fn, scope) {
+    for(var i = 0, len = this.length; i < len; ++i) {
+      fn.call(scope || this, this[i], i, this);
+    }
+  }
+}
 
 //Webcam options
 
@@ -29,12 +36,8 @@ function zipLookup(zip) {
             zip: zip
         },
         error: function(d) {
-            options = options || {name: $('#id_name').val(),
-                      location: citystate,
-                      message : $('#id_message').val(),
-                      logo_url: "/static/tmp/zombo.png"};
-            redraw();
-            console.log("okay");
+            alert("There has been an error.")
+            return false;
         },
         success: function(d) {
             //TODO:  tie this into form upload so correct ZIP is required
@@ -124,15 +127,15 @@ function drawText(context, options) {
         });
     }
 
-    //logo
-    if (options.logo_url !== "undefined") {
-        var logo = new Image();
-        logo.src = options.logo_url;
-        logo.onload = function() {
-            context.drawImage(logo,640-logo.width-10,480-logo.height-10,logo.width,logo.height);
-        };
+
+        if (options.logo_url !== "undefined") {
+            var logo = new Image();
+            logo.src = options.logo_url;
+            logo.onload = function() {
+                context.drawImage(logo,640-logo.width-10,480-logo.height-10,logo.width,logo.height);
+            }
+        }
     }
-}
 
 function drawPhoto(context,image_src, callback) {
     var img = new Image();
@@ -215,7 +218,7 @@ $("#uploadDirect").click(function(e) {
             alert('fail')
         },
         success: function(data) {
-            console.log(data);
+            var data = $.parseJSON(data);
             switchStep();
                 $('#id_raw_photo_pk').val(data.raw_photo_pk);
                 $('#id_raw_photo_url').val(data.file_url);
