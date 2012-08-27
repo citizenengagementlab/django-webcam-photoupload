@@ -13,6 +13,7 @@ def captioned_file_name(instance, filename):
 class PhotoCampaign(models.Model):
 	title = models.CharField(max_length=50)
 	slug = models.SlugField()
+	logo = models.ImageField(upload_to='logos/', null=True, blank=True)
 	description = models.TextField()
 	default_message = models.TextField(null=True,blank=True)
 	example_photo = models.ImageField(upload_to=example_file_name,null=True,blank=True)
@@ -44,5 +45,9 @@ class Photo(models.Model):
 	captioned_photo = models.ImageField(upload_to=captioned_file_name, storage=media)
 	approved = models.BooleanField()
 
+	def final_photo(self):
+		return '<img src="/media/%s" width="320" height="240" />' % self.captioned_photo
+	final_photo.allow_tags = True
+		
 	def __unicode__(self):
 		return "%s, %s, %s" % (self.name, self.zip_code, self.email,)

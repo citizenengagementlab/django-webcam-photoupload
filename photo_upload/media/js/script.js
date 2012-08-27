@@ -1,3 +1,20 @@
+
+//Adding forEach support for IE...
+
+if ( !Array.prototype.forEach ) {
+  Array.prototype.forEach = function(fn, scope) {
+    for(var i = 0, len = this.length; i < len; ++i) {
+      fn.call(scope || this, this[i], i, this);
+    }
+  }
+}
+
+//lazy load
+$("img.lazy").lazyload({
+    effect       : "fadeIn"
+});
+
+
 //Webcam options
 
 webcam.set_swf_url('../static/swf/webcam.swf');
@@ -14,6 +31,33 @@ function switchStep() {
     $("#step-1").hide();
     $("#step-2").show();
 }
+
+
+//Convert ZIP code to state, draw to canvas
+function zipLookup(zip) {
+    $.ajax({
+        type: 'get',
+        url: '../usps/zip_lookup',
+        data: {
+            zip: zip
+        },
+        error: function(d) {
+            alert("There has been an error.")
+            return false;
+        },
+        success: function(d) {
+            //TODO:  tie this into form upload so correct ZIP is required
+            if (d.city === undefined || d.state === undefined) {
+                $('input#id_zip_code').addClass('error');
+            } else {
+                window.citystate = d.city + ", " + d.state;
+                $('input#id_zip_code').removeClass('error');
+                redraw();
+            }
+        }
+    })
+}
+
 
 //wrap text on spaces to max width
 function wrapWords(context, text, maxWidth) {
@@ -53,21 +97,28 @@ function wrapLines(context,text,maxWidth) {
 
 //redraw functions for text
 function drawText(context, options) {
+    var citystate = window.citystate;
     options = options || {name: $('#id_name').val(),
-                          location: $('#id_zip_code').val(),
+                          location: citystate,
                           message : $('#id_message').val(),
-                          logo_url: "/static/tmp/zombo.png"};
+                          logo_url: logo_url};
     //note that logo_url must be in the same host as this script, otherwise we can't do canvas.toDataURL()
     //overlay a transparent rect to draw text on
     context.fillStyle = "rgba(255, 255, 255, 0.5)";
     context.fillRect(0,380,640,100);
 
     //name & location
-    var name_text = options.name+" - "+options.location;
+    if (options === undefined) {
+        var name_text = "";
+    } else if (options.location === undefined) {
+        var name_text = options.name;
+    } else {
+        var name_text = options.name+" - "+options.location;        
+    }
+    console.log(name_text);
     context.fillStyle = "rgba(0, 0, 0, 1)";
     context.font = "24px Helvetica";
     context.fillText(name_text, 10, 410);
-
     //message
     if (options.message !== "undefined") {
         var msg_text = options.message;
@@ -82,15 +133,15 @@ function drawText(context, options) {
         });
     }
 
-    //logo
-    if (options.logo_url !== "undefined") {
-        var logo = new Image();
-        logo.src = options.logo_url;
-        logo.onload = function() {
-            context.drawImage(logo,640-logo.width-10,480-logo.height-10,logo.width,logo.height);
-        };
+
+        if (options.logo_url !== "undefined") {
+            var logo = new Image();
+            logo.src = options.logo_url;
+            logo.onload = function() {
+                context.drawImage(logo,640-logo.width-10,480-logo.height-10,logo.width,logo.height);
+            }
+        }
     }
-}
 
 function drawPhoto(context,image_src, callback) {
     var img = new Image();
@@ -129,7 +180,10 @@ function callbackCamera(response) {
 
 //update image on text fields change
 $("#id_name").change(redraw);
-$("#id_zip_code").change(redraw);
+$("#id_zip_code").change(function() {
+    zip = $(this).val();
+    zipLookup(zip);
+});
 $("#id_message").change(redraw);
 //or preview button
 $("#previewImage").click(redraw);
@@ -154,6 +208,40 @@ $("#show_photo").click(function() {
     document.location.hash = "#upload_photo";
 }
 });
+
+$("#uploadDirect").click(function(e) {
+        //this is how you upload files via ajax, I guess?
+        e.preventDefault();
+        data = new FormData();
+        data.append('photo', $("#id_photo")[0].files[0]);
+
+    $.ajax({
+            type: 'POST',
+            url:"upload_raw_photo",
+            processData:false,
+            contentType: false,
+            dataType: false,
+            data: data,
+        error: function(data) {
+            alert('fail')
+        },
+        success: function(data) {
+            var data = $.parseJSON(data);
+            switchStep();
+                $('#id_raw_photo_pk').val(data.raw_photo_pk);
+                $('#id_raw_photo_url').val(data.file_url);
+
+                //draw image to canvas
+                var canvas = document.getElementById("canvas");
+                var context = canvas.getContext("2d");
+
+             drawPhoto(context,data.file_url);
+        }
+    });
+
+
+
+    });
 
 $("#sendForm").click(function(e) {
     e.preventDefault();

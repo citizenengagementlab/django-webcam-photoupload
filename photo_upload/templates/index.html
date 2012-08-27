@@ -10,14 +10,14 @@
 		<p>{{campaign.description}}</p>
 		</li>
 	{%for photo in photos%}
-		<li class="captioned_photo"><img src="{{STATIC_URL}}{{photo.captioned_photo}}" /></li>
+		<li class="captioned_photo"><img class="lazy" src="img/grey.gif" data-original="{{STATIC_URL}}{{photo.captioned_photo}}" /></li>
 	{%endfor%}
 </ul>
 {%endblock%}
 
 {%block upload_form%}
 <div id="sticky">
-	<aside id="tab" class="rotate-90-ie"><h2>Upload +</h2></aside>
+	<aside id="tab"><h2 >Upload +</h2></aside>
 	<div id="upload">
 		<article id="step-1">
 			<section class="left-section">
@@ -28,10 +28,20 @@
 					<li>Click the button &darr;</p>
 				</ol>
 				<button id="snap-button">Take Photo</button>
+				<p>No webcam?  Upload a file!</p>
+				<div id="file-uploader"></div> 
+				<form id="upload_photo" method="POST" action="upload_raw_photo" enctype="multipart/form-data">
+					{{raw_form.as_ul}}
+					<input id="uploadDirect" type="submit" value="Go!" />
+				</form>
+		
+	
+		
 			</section>
 			<section class="right-section">
-					<div id="camera" />
+					<div id="camera"></div>
 			</section>
+
 		</article>
 		
 		<article id ="step-2">
@@ -90,10 +100,28 @@
 {%endblock%}
 
 {%block extra_script%}
+
+
+
+
+<script type="text/javascript">
+//passing the logo to our Javascript from our photo object - might be a more proper way to do this?
+var logo_url = "{{MEDIA_URL}}{{logo}}";
+</script>
+
 {{block.super}}
+<script src="{{STATIC_URL}}js/libs/jquery.lazyload.min.js"></script>
 <script src="{{STATIC_URL}}js/libs/webcam.js"></script>
 <script src="{{STATIC_URL}}js/script.js"></script>
-<!--[if IE]><script src="{{STATIC_URL}}js/libs/excanvas.compiled.js"></script><![endif]-->
+
+<!--[if lt IE 9]>
+	<script src="{{STATIC_URL}}js/libs/flashcanvas.js"></script>
+<![endif]-->
+
+<!--[if IE]>
+	<script src="{{STATIC_URL}}js/libs/fileuploader.js"></script>
+	<script src="{{STATIC_URL}}js/ie.js"></script>
+<![endif]-->
 {%endblock%}
 
 

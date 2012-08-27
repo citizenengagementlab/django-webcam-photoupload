@@ -38,21 +38,31 @@ def campaign_render(request,slug):
         #the regular file upload fallback
         print "regular photo form post"
         form = PhotoForm(request.POST, request.FILES)
+        logo = PhotoCampaign.objects.get().logo
+        raw_form = RawPhotoForm(request.POST or None)
         if form.is_valid():
             new_photo = form.save()
     else:
         form = PhotoForm()
 
-    context['photos'] = Photo.objects.filter(campaign=campaign,approved=True)
-    context['form'] = form
-    context['campaign'] = campaign
+    context = {
+        "photos": Photo.objects.filter(campaign=campaign,approved=True),
+        'form': form,
+        'raw_form': raw_form,
+        "campaign": campaign,
+        'logo': logo,
+    }
+
     return render(request, "index.html", dictionary=context)
     
 @csrf_exempt
 def upload_raw_photo(request,slug):
     if request.method == 'POST':
         raw_photo = RawPhoto()
-        raw_content_file = ContentFile(request.raw_post_data)
+        if request.FILES and request.FILES['photo']:
+            raw_content_file = request.FILES['photo']
+        else:
+            raw_content_file = ContentFile(request.raw_post_data)
         file_name = "raw_photo.png"
         raw_photo.photo.save(file_name, raw_content_file)
         data = {
@@ -63,7 +73,7 @@ def upload_raw_photo(request,slug):
         }
     else:
         data = {'success': False, 'message':"must post to this url"}
-    return HttpResponse(json.dumps(data),mimetype="application/json")
+    return HttpResponse(json.dumps(data),mimetype="text/html")
     
 @csrf_exempt
 def submit(request,slug):
