@@ -11,6 +11,8 @@ import re
 from django.core.files.base import ContentFile
 import tempfile
 
+from ak_support.views import ak_connect,validate_token
+
 from photo_upload.models import *
 from photo_upload.forms import *
     
@@ -20,27 +22,30 @@ def index(request):
 
 def campaign_render(request,slug):
     campaign = get_object_or_404(PhotoCampaign,slug=slug)
-    form = PhotoForm(request.POST or None)
-    if form.is_valid():
-        new_photo = form.save()
 
-    response_data = {
-        'form': form
-    }
-
-    form = PhotoForm(request.POST or None, request.FILES or None)
-
-    if form.is_valid():
-        new_upload = form.save()
+    context = {}
+    akid = request.GET.get('akid')
+    if akid:
+        ak = ak_connect()
+        user = ak.User.get({'akid':request.GET.get('akid')})
+        if user:
+            context['user'] = user
+            context['recognized'] = True
     else:
-        print form.errors
+        context['recognized'] = False
 
-    context = {
-        "photos": Photo.objects.filter(campaign=campaign,approved=True),
-        'form': form,
-        "campaign": campaign,
-    }
+    if request.method == "POST":
+        #the regular file upload fallback
+        print "regular photo form post"
+        form = PhotoForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_photo = form.save()
+    else:
+        form = PhotoForm()
 
+    context['photos'] = Photo.objects.filter(campaign=campaign,approved=True)
+    context['form'] = form
+    context['campaign'] = campaign
     return render(request, "index.html", dictionary=context)
     
 @csrf_exempt
@@ -62,6 +67,10 @@ def upload_raw_photo(request,slug):
     
 @csrf_exempt
 def submit(request,slug):
+    if request.method != "POST":
+        return HttpResponseBadRequest(json.dumps({'success': False, 'message':"must post to this url"}),
+                                    mimetype="application/json")
+
     required_fields = ['name','zip_code','email','captioned_photo','raw_photo_id']
     for f in required_fields:
         if request.POST.get(f) == "":
@@ -93,13 +102,31 @@ def submit(request,slug):
     new_photo = Photo.objects.create(name=request.POST.get('name'),
                                     zip_code=request.POST.get('zip_code'),
                                     email=request.POST.get('email'),
+                                    message=request.POST.get('message'),
                                     campaign=campaign,
-                                    raw_photo=raw_photo)
+                                    raw_photo=raw_photo,
+                                    akid=request.POST.get('akid'))
     try:
         new_photo.captioned_photo.save(captioned_file_name,captioned_content_file)
+        if new_photo.akid:
+            new_photo.approved = True
         new_photo.save()
         resp = {'message':'success'}
     except Exception:
         resp = {"message":"error"}
+
+    if new_photo.campaign.ak_page_name:
+        #now act on the user
+        ak = ak_connect()
+        act_dict = {'email':new_photo.email,
+                    'postal':new_photo.zip_code,
+                    'page':new_photo.campaign.ak_page_name}
+        if not new_photo.akid:
+            act_dict['name'] = new_photo.name
+        else:
+            pass
+            #because we are shortening the displayed name for recognized users
+            #don't want to overwrite good data with bad
+        ak.User.act(act_dict)
 
     return HttpResponse(json.dumps(resp),mimetype="application/json")

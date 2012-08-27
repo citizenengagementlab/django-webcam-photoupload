@@ -131,15 +131,17 @@ function callbackCamera(response) {
 $("#id_name").change(redraw);
 $("#id_zip_code").change(redraw);
 $("#id_message").change(redraw);
+//or preview button
+$("#previewImage").click(redraw);
 
 //button click handlers
 $('#tab').click(function(e){
     $(this).parent().toggleClass('active');
 });
-
 $("#snap-button").click(function() {
     webcam.snap("upload_raw_photo", "callbackCamera");
 });
+
 
 //Show upload form field for photo
 $("#show_photo").click(function() {
@@ -169,7 +171,9 @@ $("#sendForm").click(function(e) {
          name:$('#id_name').val(),
          zip_code: $('#id_zip_code').val(),
          email: $('#id_email').val(),
-         raw_photo_pk: $('#id_raw_photo_pk').val()
+         message: $('#id_message').val(),
+         raw_photo_pk: $('#id_raw_photo_pk').val(),
+         akid: $('#id_akid').val()
         },
         error: function(jqXHR, textStatus) {
             var errors = $.parseJSON(jqXHR.responseText);

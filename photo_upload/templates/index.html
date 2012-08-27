@@ -50,29 +50,35 @@
 				    <div id="captioned_photo" class="fieldWrapper">
 						{{ form.captioned_photo.errors }}
 					</div>
-					<div class="fieldWrapper">
-						{{ form.name.errors }}
-						<label for="id_name">Your Name</label>
-						{{ form.name }}
-					</div>
-				    <div class="fieldWrapper">
-				        {{ form.zip_code.errors }}
-				        <label for="id_zip_code">Your zip code</label>
-				        {{ form.zip_code}}
-				    </div>
-				    <div class="fieldWrapper">
-				        {{ form.email.errors }}
-				        <label for="id_email">Your email</label>
-				        {{ form.email}}
-				    </div>
+					{% if recognized %}
+						Not {{user.first_name}} {{user.last_name}}? <a href=".">click here</a>
+						<input id="id_name" type="hidden" name="name" value="{{user.first_name}} {{user.last_name|slice:'1'}}" />
+						<input id="id_zip_code" type="hidden" name="zip_code" value="{{user.postal}}" />
+						<input id="id_email" type="hidden" name="email" value="{{user.email}}" />
+						<input id="id_akid" name="akid" type="hidden" value="{{user.id}}"/>
+					{%else%}
+						<div class="fieldWrapper">
+							<label for="id_name">Your Name</label>
+							<input id="id_name" type="text" name="name" maxlength="50" />
+						</div>
+					    <div class="fieldWrapper">
+					        <label for="id_zip_code">Your zip code</label>
+					        <input id="id_zip_code" type="text" name="zip_code" maxlength="5" />
+					    </div>
+					    <div class="fieldWrapper">
+					        <label for="id_email">Your email</label>
+					        <input id="id_email" type="text" name="email" maxlength="75" />
+					    </div>
+					{%endif%}
 				   	<div class="fieldWrapper">
 						<label for="id_message">Your Message</label>
-						{{ form.message }}
+						<textarea id="id_message" rows="10" cols="40" name="message">{{campaign.default_message}}</textarea>
 					</div>
 					<input id="id_raw_photo_url" name="raw_photo_url" type="hidden" />
 				    <input id="id_raw_photo_pk" name="raw_photo_pk" type="hidden" />
-					<input id="sendForm" type="submit" value="Send" />
-					<a href="/privacy/">Privacy Policy</a>
+				    <input id="previewImage" type="button" value="Preview" />
+					<input id="sendForm" type="submit" value="Save" />
+					<div class="fieldWrapper"><a href="/privacy/">Privacy Policy</a></div>
 				</form>	
 			</section>
 			<section class="right-section">
