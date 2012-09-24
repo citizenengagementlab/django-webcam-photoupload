@@ -2,3 +2,4 @@
 *.db
 venv
 .DS_Store
+media/*
