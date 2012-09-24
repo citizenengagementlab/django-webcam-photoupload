@@ -17,7 +17,7 @@ class PhotoCampaign(models.Model):
 	description = models.TextField()
 	default_message = models.TextField(null=True,blank=True)
 	example_photo = models.ImageField(upload_to=example_file_name,null=True,blank=True)
-	ak_page_name = models.CharField(help_text="name of the page to act on the user",max_length=50,null=True,blank=True)
+#	ak_page_name = models.CharField(help_text="name of the page to act on the user",max_length=50,null=True,blank=True)
 	
 	def __unicode__(self):
 		return '%s, %s' % (self.title, self.description,)
@@ -39,8 +39,8 @@ class Photo(models.Model):
 	name = models.CharField(max_length=50)
 	zip_code = models.CharField(max_length=5)
 	email = models.EmailField(max_length=75)
-	message = models.TextField(null=True,blank=True)
-	akid = models.PositiveIntegerField(null=True,blank=True)
+	message = models.CharField(max_length=280,null=True,blank=True)
+#	akid = models.PositiveIntegerField(null=True,blank=True)
 	raw_photo = models.ForeignKey(RawPhoto, related_name="original_photo")
 	captioned_photo = models.ImageField(upload_to=captioned_file_name, storage=media)
 	approved = models.BooleanField()

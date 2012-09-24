@@ -1,102 +1,120 @@
 {% extends "base.html" %}
 
 
-{%block photo_grid%}
-
+{%block content%}
+<div id="black_overlay"></div>
+<div class="flashDiv"></div>
+<div id="wrapper">
 <ul id="photo_grid">
 	{{raw_post}}
 		<li class="captioned_photo first">
 		<h2>{{campaign.title}}</h2>
 		<p>{{campaign.description}}</p>
+		<div id="start_upload">
+			<button>Upload</button>
+		</div>
 		</li>
 	{%for photo in photos%}
-		<li class="captioned_photo"><img class="lazy" src="img/grey.gif" data-original="{{STATIC_URL}}{{photo.captioned_photo}}" /></li>
+		<li class="captioned_photo"><img class="lazy" src="{{STATIC_URL}}/img/grey.gif" data-original="{{MEDIA_URL}}{{photo.captioned_photo}}" /></li>
 	{%endfor%}
 </ul>
-{%endblock%}
 
-{%block upload_form%}
-<div id="sticky">
-	<aside id="tab"><h2 >Upload +</h2></aside>
-	<div id="upload">
-		<article id="step-1">
-			<section class="left-section">
-				<h2>Use your webcam to take a photo</h2>
+
+
+<div id="upload">
+	<article id="step-1">
+		<section class="left-section">
+			<h2>Use your webcam to take a photo!</h2>
+			<ol>
+				<li>Click &#10004; to allow camera access &rarr;</li>
+				<li>Smile for the camera <span>&#9786;</span></li>
+				<li>Click the button &darr;</li`>
+			</ol>
+			<button id="snap-button">Take Photo</button>
+			<p>No webcam?  Upload a photo!</p>
+			<div id="file-uploader"></div> 
+			<form id="upload_photo" method="POST" action="upload_raw_photo" enctype="multipart/form-data">
+				{{raw_form.as_ul}}
+				<input id="uploadDirect" type="submit" value="Upload your photo!" />
+			</form>
+			<a id="helpTextLink" href="#helpText">Can't click on the "allow" button?</a>
+				<div id="helpText"><span>This seems to be a problem with Flash Player and is currently beyond our control. Please try the following to fix:</span>
 				<ol>
-					<li>Click &#10004; to allow camera access &rarr;</li>
-					<li>Smile for the camera &#9786;</li>
-					<li>Click the button &darr;</p>
-				</ol>
-				<button id="snap-button">Take Photo</button>
-				<p>No webcam?  Upload a file!</p>
-				<div id="file-uploader"></div> 
-				<form id="upload_photo" method="POST" action="upload_raw_photo" enctype="multipart/form-data">
-					{{raw_form.as_ul}}
-					<input id="uploadDirect" type="submit" value="Go!" />
-				</form>
+					<li>Go to the <a href="http://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager06.html">Flash Player settings website</a></li>
+					<li>Under the Website Privacy Settings tab, find nuestraeleccion.org in the privacy settings in the "Visited Websites" list.</li>
+					<li>Click on nuestraeleccion.org to highlight it, and then select the "Always allow" option above.</li>
+					<li>Close the flash settings web page to save, restart your web browser, and try again.</li>
+				</ol>	
+				</div>
+		</section>
+		<section class="right-section">
+			<div id="camera"></div>
+		</section>
+	</article>
 		
-	
-		
-			</section>
-			<section class="right-section">
-					<div id="camera"></div>
-			</section>
-
-		</article>
-		
-		<article id ="step-2">
-			<section class="left-section">
-				<form action="/submit" method="POST" enctype="multipart/form-data">
-					{% csrf_token %}
-					<!-- csrf token ajax for photo, pass to PhotoUpload view -->
-					{{ form.non_field_errors }}
-					<div class="nophoto">
-				    	<div class="fieldWrapper">
-				        	{{ form.captioned_photo.errors }}
-				        	<label for="id_captioned_photo">Upload a photo</label>
-				        	{{ form.captioned_photo}}
-				        </div>		
-				    </div>	
-				    <div id="captioned_photo" class="fieldWrapper">
-						{{ form.captioned_photo.errors }}
+	<article id ="step-2">
+		<section class="left-section">
+			<form id="caption_form" action="/submit" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<!-- csrf token ajax for photo, pass to PhotoUpload view -->
+				{{ form.non_field_errors }}
+				<div class="nophoto">
+				    <div class="fieldWrapper">
+				        {{form.captioned_photo.errors}}
+				        <label for="id_captioned_photo">Upload a photo</label>
+				        {{form.captioned_photo}}
+				       </div>		
+				   </div>	
+				   <div id="captioned_photo" class="fieldWrapper">
+					{{ form.captioned_photo.errors }}
+				</div>
+				{% if recognized %}
+					Not {{user.first_name}} {{user.last_name}}? <a href=".">click here</a>
+					<input id="id_name" type="hidden" name="name" value="{{user.first_name}} {{user.last_name|slice:'1'}}" />
+					<input id="id_zip_code" type="hidden" name="zip_code" value="{{user.postal}}" />
+					<input id="id_email" type="hidden" name="email" value="{{user.email}}" />
+					<input id="id_akid" name="akid" type="hidden" value="{{user.id}}"/>
+				{%else%}
+					<div class="fieldWrapper">
+						<label for="id_name">Your Name</label>
+						<input id="id_name" type="text" name="name" maxlength="50" />
 					</div>
-					{% if recognized %}
-						Not {{user.first_name}} {{user.last_name}}? <a href=".">click here</a>
-						<input id="id_name" type="hidden" name="name" value="{{user.first_name}} {{user.last_name|slice:'1'}}" />
-						<input id="id_zip_code" type="hidden" name="zip_code" value="{{user.postal}}" />
-						<input id="id_email" type="hidden" name="email" value="{{user.email}}" />
-						<input id="id_akid" name="akid" type="hidden" value="{{user.id}}"/>
-					{%else%}
-						<div class="fieldWrapper">
-							<label for="id_name">Your Name</label>
-							<input id="id_name" type="text" name="name" maxlength="50" />
-						</div>
-					    <div class="fieldWrapper">
-					        <label for="id_zip_code">Your zip code</label>
-					        <input id="id_zip_code" type="text" name="zip_code" maxlength="5" />
-					    </div>
-					    <div class="fieldWrapper">
-					        <label for="id_email">Your email</label>
-					        <input id="id_email" type="text" name="email" maxlength="75" />
-					    </div>
-					{%endif%}
-				   	<div class="fieldWrapper">
-						<label for="id_message">Your Message</label>
-						<textarea id="id_message" rows="10" cols="40" name="message">{{campaign.default_message}}</textarea>
+					<div class="fieldWrapper">
+					    <label for="id_zip_code">Your zip code</label>
+					    <input id="id_zip_code" type="text" name="zip_code" maxlength="5" />
 					</div>
-					<input id="id_raw_photo_url" name="raw_photo_url" type="hidden" />
-				    <input id="id_raw_photo_pk" name="raw_photo_pk" type="hidden" />
-				    <input id="previewImage" type="button" value="Preview" />
-					<input id="sendForm" type="submit" value="Save" />
-					<div class="fieldWrapper"><a href="/privacy/">Privacy Policy</a></div>
-				</form>	
-			</section>
-			<section class="right-section">
-				<canvas id="canvas" width="640" height="480"></canvas>
-			</section>
-		</article>
-	</div>
+					<div class="fieldWrapper">
+					    <label for="id_email">Your email</label>
+					    <input id="id_email" type="text" name="email" maxlength="75" />
+					</div>
+				{%endif%}
+				 <div class="fieldWrapper">
+					<label for="id_message">Your Message: <span></span></label>
+					<textarea id="id_message" rows="10" cols="40" maxlength="140" name="message">{{campaign.default_message}}</textarea>
+				</div>
+				<input id="id_raw_photo_url" name="raw_photo_url" type="hidden" />
+				<input id="id_raw_photo_pk" name="raw_photo_pk" type="hidden" />
+				<a id="clearFields" href="#" />Clear</a>
+				<a id="startOver" href="#" />Start Over</a>
+				<input id="sendForm" type="submit" value="Submit" />
+				<a href="#privacy">privacy policy</a>
+              	<div id="privacyText">
+                <p>
+                  “You will receive updates from Presente.org as a result of submitting your email. You will be able to unsubscribe from our list at any time. Presente.org won’t share your information with anyone else without your consent.”
+                </p>
+              </div>
+			</form>	
+		</section>
+		<section class="right-section">
+			<canvas id="canvas-foreground" width="640" height="480"></canvas>
+			<canvas id="canvas" width="640" height="480"></canvas>
+		</section>
+	</article>
 </div>
+
+</div>
+
+<div class="push"></div>
 {%endblock%}
 
 {%block extra_script%}
@@ -109,18 +127,18 @@
 var logo_url = "{{MEDIA_URL}}{{logo}}";
 </script>
 
-{{block.super}}
-<script src="{{STATIC_URL}}js/libs/jquery.lazyload.min.js"></script>
-<script src="{{STATIC_URL}}js/libs/webcam.js"></script>
-<script src="{{STATIC_URL}}js/script.js"></script>
+<script src="{{STATIC_URL}}js/spin.min.js"></script>
+<script src="{{STATIC_URL}}js/jquery.lazyload.min.js"></script>
+<script src="{{STATIC_URL}}js/webcam.js"></script>
+<script src="{{STATIC_URL}}js/main.js"></script>
 
 <!--[if lt IE 9]>
-	<script src="{{STATIC_URL}}js/libs/flashcanvas.js"></script>
+	<script src="{{STATIC_URL}}js/flashcanvas.js"></script>
 <![endif]-->
 
 <!--[if IE]>
-	<script src="{{STATIC_URL}}js/libs/fileuploader.js"></script>
-	<script src="{{STATIC_URL}}js/ie.js"></script>
+	<script src="{{STATIC_URL}}js/fileuploader.js"></script>
+	<script src="{{STATIC_URL}}js/photo_upload_ie.js"></script>
 <![endif]-->
 {%endblock%}
 

@@ -1,12 +1,9 @@
 import os,sys
 from os.path import join
 PROJECT_PATH = os.path.abspath(os.path.split(__file__)[0])
-SITEBASE_ROOT = os.path.join(PROJECT_PATH,'..','..','..')
-sys.path.insert(0, join(SITEBASE_ROOT,'projects'))
-sys.path.insert(0, join(SITEBASE_ROOT,'apps'))
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
 
 ADMINS = (
     # ('Mike Vattuone', 'your_email@example.com'),
@@ -72,7 +69,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    MEDIA_ROOT,
+
 )
 
 
@@ -158,8 +155,4 @@ LOGGING = {
     }
 }
 
-# ActionKit settings
-AK_API_HOST = 'act.engagementlab.org'
-AK_API_USER = 'api_dude'
-AK_API_PASSWORD = 't69<t9b{Kd={24N}P'
 
