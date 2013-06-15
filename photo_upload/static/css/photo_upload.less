@@ -1,0 +1,351 @@
+@import "normalize.less";
+@import "mixins.less";
+
+/*Mixins*/
+
+
+.camera-box() {
+	border:15px solid #333;
+	background:#eee;
+	.border-radius(20px);
+}
+
+
+#black_overlay {
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 9999px; 
+	background-color: black;
+	z-index:1001;
+	-moz-opacity: 0.8;
+	opacity:.80;
+	filter: alpha(opacity=80);
+}
+
+.flashDiv{ 
+	display:none;
+    position:fixed; 
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color:#fff;
+    z-index:9000000;
+ }
+
+
+body {
+	#wrapper {
+		width:1050px;
+		margin:0 auto -105px auto;
+		min-height: 100%;
+		height: auto !important;
+		height: 100%;
+		clear:both;
+		#upload {
+			background:cyan;
+			display:none;
+			position: absolute;
+			margin:0 auto;
+			top:50%;
+			min-height:534px;
+			margin-top:-267px;
+			min-width: 940px;
+			z-index: 9001; /* OVER 9000!!!! */
+			.clearfix();
+			#step-1 {
+				display:block;
+				.left-section {
+					width:300px;
+					float:left;
+					padding:30px 30px 60px 20px;
+					.box-sizing(border-box);
+					h2,p,ol {
+						font-family: "Museo-slab", Arial, sans-serif;
+						color:#FFF; 
+					}
+					h2 {
+						text-align:center;
+						margin-bottom:10px;
+					}
+					ol {
+						margin: 20px auto 20px;
+						font-size: 18px;
+						position: relative;
+						left: 30px;
+						li span {
+							font-size:49px;
+							line-height:0px;
+						}
+					}
+					button {
+						background-color: #02A6C4;
+						color: white;
+						width: 180px;
+						height: 50px;
+						border: 0;
+						font-size: 33px;
+						line-height: 30px;
+						display: block;
+						font-family: "bebas-neue", Arial, sans-serif;
+						letter-spacing: 1px;
+						margin: 0 auto 20px auto;				
+					}
+					p {
+						text-align:left;
+						margin:0;
+						font-size:14px;
+							
+					}
+					input#uploadDirect {
+						background-color: #02A6C4;
+						color: white;
+						width: 150px;
+						height: 30px;
+						border: 0;
+						font-size: 18px;
+						line-height: 30px;
+						display: block;
+						font-family: "bebas-neue", Arial, sans-serif;
+						letter-spacing: 1px;
+						margin-top:10px;	
+					}
+				}
+				.right-section {
+					width:669px;
+					padding:5px;
+					float:right;
+						
+					#camera {
+						.camera-box();		
+					}
+				}
+			}
+			#step-2 {
+				display:none;
+				.left-section {
+					width:300px;
+					float:left;
+					padding:30px 30px 60px 20px;
+					.box-sizing(border-box);
+					form {	
+						display:block;
+						input.error {
+							border-color:red;
+						}
+						div.spinner {
+							top:350px !important;
+							left:20px !important;
+							&:after {
+								content: "working...";
+								margin-left:20px;
+								position:relative;
+								bottom:10px;
+								text-transform:uppercase;
+								font-family:"bebas-neue";
+								font-size: 18px;
+								font-weight:bold;
+								color:white;
+							}
+						}
+						div.fieldWrapper {
+							margin-bottom:5px;
+							display:inline-block;	
+						}
+						label {
+							color:white;
+							font-family: "museo-slab", Arial, sans-serif;
+							font-size:16px;
+						}
+						input[type="text"] {
+							height:25px;
+							font-size:18px;
+
+							.box-sizing(border-box);
+						}
+						input[type="submit"] {
+							background-color: #02A6C4;
+							color: white;
+							width: 120px;
+							height: 30px;
+							border: 0;
+							font-size: 18px;
+							line-height: 30px;
+							display: block;
+							font-family: "bebas-neue", Arial, sans-serif;
+							letter-spacing: 1px;
+							margin-top:5px;
+
+						}
+						a {	
+							display:inline;
+							margin-top:10px;
+							font-size:11px;
+							color:white;
+							&#startOver,&#previewImage {
+								display:inline;
+								text-decoration: underline;
+								margin-right:10px;
+								font-size:12px;
+							}
+						} 
+						#privacy {
+							color:white;
+							font-size:11px;
+							line-height:16px;
+						}
+						textarea {
+							width:230px;
+							height:80px;
+						}
+						label {
+							display:block;
+							&.error {
+								color:red;
+							}
+						}
+					}
+				}
+				.right-section {
+					width:669px;
+					padding:5px;
+					float:right;
+					#canvas {
+						.camera-box();
+							
+					}
+				}
+			}
+		}
+	}
+}
+
+div.nophoto {
+	display:none;
+}
+
+.right {
+	position:absolute;
+	float:none;
+	right:0px;
+}
+
+.errorlist {
+	margin: 5px 0px;
+	color: red;
+}
+
+.active {
+	right: 0px !important;
+}
+
+
+
+ul#photo_grid {
+	padding:20px 0;
+	.clearfix();
+	li.captioned_photo {
+		width:350px;
+		height:260px;
+		list-style-type: none;
+		display:inline;
+		&.first {
+		background:red;
+		display:inline-block;
+		vertical-align: top;
+		color:#FFF;
+		width:346px;
+		height:260px;
+		box-shadow: 1px 1px 3px black;
+		float:left;
+		h2, p{
+			margin: 20px;
+			font-family: "Museo-slab", Arial, sans-serif;
+		}
+		h2 {
+			color: #CDCFD0;
+		}
+		}
+		img {
+			width:inherit;
+			height:inherit;
+			box-shadow: 1px 1px 3px black;
+			&:hover {
+				.scale(1.25);
+			}	
+		}
+		#start_upload button {
+			background-color: #02A6C4;
+color: white;
+width: 180px;
+height: 50px;
+border: 0;
+font-size: 33px;
+line-height: 30px;
+display: block;
+font-family: "bebas-neue", Arial, sans-serif;
+letter-spacing: 1px;
+margin: 0 auto;
+		}
+	}
+}
+
+
+/* ----------------------------
+simple reset
+---------------------------- */
+
+html, body, ul, ol, li, form, fieldset, legend
+{
+	margin: 0;
+	padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6, p { margin-top: 0; }
+
+fieldset,img { border: 0; }
+
+legend { color: #000; }
+
+ul li { list-style: none; }
+
+ol { padding:0px 10px 0px 30px; }
+
+sup { vertical-align: text-top; }
+
+sub { vertical-align: text-bottom; }
+
+table
+{
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+caption, th, td
+{
+	text-align: left;
+	vertical-align: top;
+	font-weight: normal;
+}
+
+input[type="text"], select
+{
+	font-size: 110%;
+	line-height: 1.1;
+	border: 1px solid grey;
+	border-radius: 2px;
+}
+
+label {
+	font-weight:normal;
+	margin-bottom:5px;
+}
+
+abbr, acronym
+{
+	border-bottom: .1em dotted;
+	cursor: help;
+}
