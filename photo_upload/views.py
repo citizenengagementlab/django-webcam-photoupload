@@ -75,7 +75,7 @@ def upload_raw_photo(request,slug):
         if request.FILES and request.FILES['photo']:
             raw_content_file = request.FILES['photo']
         else:
-            raw_content_file = ContentFile(request.raw_post_data)
+            raw_content_file = ContentFile(request.body)
         file_name = "raw_photo.png"
         raw_photo.photo.save(file_name, raw_content_file)
         data = {

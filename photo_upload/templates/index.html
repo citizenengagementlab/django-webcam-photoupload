@@ -37,15 +37,6 @@
 				{{raw_form.as_ul}}
 				<input id="uploadDirect" type="submit" value="Upload your photo!" />
 			</form>
-			<a id="helpTextLink" href="#helpText">Can't click on the "allow" button?</a>
-				<div id="helpText"><span>This seems to be a problem with Flash Player and is currently beyond our control. Please try the following to fix:</span>
-				<ol>
-					<li>Go to the <a href="http://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager06.html">Flash Player settings website</a></li>
-					<li>Under the Website Privacy Settings tab, find nuestraeleccion.org in the privacy settings in the "Visited Websites" list.</li>
-					<li>Click on nuestraeleccion.org to highlight it, and then select the "Always allow" option above.</li>
-					<li>Close the flash settings web page to save, restart your web browser, and try again.</li>
-				</ol>	
-				</div>
 		</section>
 		<section class="right-section">
 			<div id="camera"></div>
@@ -54,7 +45,7 @@
 		
 	<article id ="step-2">
 		<section class="left-section">
-			<form id="caption_form" action="/submit" method="POST" enctype="multipart/form-data">
+			<form id="caption_form" action="/submit" method="POST">
 				{% csrf_token %}
 				<!-- csrf token ajax for photo, pass to PhotoUpload view -->
 				{{ form.non_field_errors }}
@@ -94,6 +85,7 @@
 				</div>
 				<input id="id_raw_photo_url" name="raw_photo_url" type="hidden" />
 				<input id="id_raw_photo_pk" name="raw_photo_pk" type="hidden" />
+				<input id="id_photo_dataurl" name="captioned_photo" type="hidden" />
 				<a id="clearFields" href="#" />Clear</a>
 				<a id="startOver" href="#" />Start Over</a>
 				<input id="sendForm" type="submit" value="Submit" />
@@ -127,17 +119,19 @@
 var logo_url = "{{MEDIA_URL}}{{logo}}";
 </script>
 
-<script src="{{STATIC_URL}}js/spin.min.js"></script>
-<script src="{{STATIC_URL}}js/jquery.lazyload.min.js"></script>
-<script src="{{STATIC_URL}}js/webcam.js"></script>
+
+<script src="{{STATIC_URL}}js/plugins/jquery.form.js"></script>
+<script src="{{STATIC_URL}}js/plugins/spin.min.js"></script>
+<script src="{{STATIC_URL}}js/plugins/jquery.lazyload.min.js"></script>
+<script src="{{STATIC_URL}}js/plugins/webcam.js"></script>
 <script src="{{STATIC_URL}}js/main.js"></script>
 
 <!--[if lt IE 9]>
-	<script src="{{STATIC_URL}}js/flashcanvas.js"></script>
+	<script src="{{STATIC_URL}}js/plugins/flashcanvas.js"></script>
 <![endif]-->
 
 <!--[if IE]>
-	<script src="{{STATIC_URL}}js/fileuploader.js"></script>
+	<script src="{{STATIC_URL}}js/plugins/fileuploader.js"></script>
 	<script src="{{STATIC_URL}}js/photo_upload_ie.js"></script>
 <![endif]-->
 {%endblock%}
