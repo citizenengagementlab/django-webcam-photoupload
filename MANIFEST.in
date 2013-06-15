@@ -1,0 +1,2 @@
+include *.txt
+recursive-include photo_upload *.py *.html *.js *.css *.swf *.less *.gif *.png *.mp3
