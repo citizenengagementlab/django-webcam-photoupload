@@ -4,7 +4,7 @@ from django.core.files.storage import FileSystemStorage
 media = FileSystemStorage()
 
 def example_file_name(instance, filename):
-	return "webcam/%s/example.png" % (instance.campaign.slug,instance.pk)
+	return "webcam/%s/example.png" % (instance.slug)
 def raw_file_name(instance, filename):
 	return "webcam/raw/raw.png"
 def captioned_file_name(instance, filename):
