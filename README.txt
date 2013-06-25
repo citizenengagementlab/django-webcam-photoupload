@@ -11,13 +11,25 @@ Installation
 
 Pretty dang simple:
 
-* Add 'photo_upload' to your INSTALLED_APPS.
+* Add 'photo_upload' and 'ziplookup' to your INSTALLED_APPS.
 
-* Include photo_upload.urls in your main URL.
+* SyncDB
 
-* ...?  Not really sure what you'll have to do to make this work nicely, quite yet... 
+* Load fixtures from ziplookup.  This adds a ton of zip codes to a model 
+in the database, which will convert your zip codes into a city and state.
+(we will likely figure out a way to make this automatic in an upcoming release.)
 
-A caveat
--------------
+* Add the app to your urls.py
+urlpatterns = patterns('',
+	url(r'^photo/', include('photo_upload.urls'))
+)
 
-Sooo we're still kind of figuring out how to organize this bad boy, so any and all suggestions to the structure of the project would be more than welcome.  :)
+* ...profit?  Not really sure what you'll have to do to make this work nicely, quite yet... 
+
+
+Get involved
+=========
+
+We're still kind of figuring out how to organize this bad boy, so any and all suggestions to the structure of the project would be more than welcome.  :)
+
+

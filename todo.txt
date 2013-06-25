@@ -1,0 +1,10 @@
+Figure out how to decouple the photo_upload URL path from the ziplookup path.  IE I don't want to have the URL in the ajax call for ziplookup include "photo" in it.  I guess this isn't really a big deal as long as I explain the URL HAS TO BE      
+
+url(r'^photo/', include('photo_upload.urls'))
+
+
+Figure out what this means when I try to submit:
+
+MultiPartParserError at /photo/bla-bla-bla/submit
+Invalid boundary in multipart: NoneRequest Method: POSTRequest URL: 
+Probably means I need to set up a boundary... though I didn't before so...

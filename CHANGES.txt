@@ -1,1 +1,7 @@
-v0.1, 6/14/2013 -- Initial Release
+v0.2.0, 6/24/2013 -- 
+	Fixed bug in adding example photo to a Photo Campaign, 
+	Fixed campaign link using relative rather than absolute path,
+	Removed unused USPS app, as we have Zips saved to the database.  Maybe do API integration later?,
+	Add JSON support to MANIFEST, so we can pass json file w/ zip codes
+	Updated install documentation
+v0.1.0, 6/14/2013 -- Initial Release
