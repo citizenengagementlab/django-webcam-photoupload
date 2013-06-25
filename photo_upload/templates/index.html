@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
-
 {%block content%}
+
+<link rel="stylesheet" href="{{STATIC_URL}}css/style.css" />
+<!--[if IE]><link rel="stylesheet" href="{{STATIC_URL}}css/fileuploader.css" /><![endif]-->
 <div id="black_overlay"></div>
 <div class="flashDiv"></div>
 <div id="wrapper">
@@ -107,19 +109,15 @@
 </div>
 
 <div class="push"></div>
-{%endblock%}
-
-{%block extra_script%}
-
-
 
 
 <script type="text/javascript">
-//passing the logo to our Javascript from our photo object - might be a more proper way to do this?
+//passing the logo into Javascript from the context.
 var logo_url = "{{MEDIA_URL}}{{logo}}";
 </script>
 
-
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+<script>window.jQuery || document.write('<script src="{{STATIC_URL}}js/libs/jquery-1.7.1.min.js"><\/script>')</script>
 <script src="{{STATIC_URL}}js/plugins/jquery.form.js"></script>
 <script src="{{STATIC_URL}}js/plugins/spin.min.js"></script>
 <script src="{{STATIC_URL}}js/plugins/jquery.lazyload.min.js"></script>
@@ -134,6 +132,5 @@ var logo_url = "{{MEDIA_URL}}{{logo}}";
 	<script src="{{STATIC_URL}}js/plugins/fileuploader.js"></script>
 	<script src="{{STATIC_URL}}js/photo_upload_ie.js"></script>
 <![endif]-->
+
 {%endblock%}
-
-
