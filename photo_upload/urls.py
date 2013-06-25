@@ -6,7 +6,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url (r'^usps/',include('ziplookup.urls')),
+    url (r'^ziplookup/',include('ziplookup.urls')),
 )
 
 urlpatterns += patterns('photo_upload.views',
