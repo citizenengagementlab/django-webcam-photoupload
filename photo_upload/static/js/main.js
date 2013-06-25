@@ -115,7 +115,7 @@ $('#id_message').keyup(function(){
 function zipLookup(zip) {
     $.ajax({
         type: 'get',
-        url: '/usps/zip_lookup',
+        url: '/photo/ziplookup/zip_lookup',
         data: {
             zip: zip
         },
