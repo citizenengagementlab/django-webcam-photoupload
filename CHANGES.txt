@@ -1,3 +1,5 @@
+v0.3.0, 7/1/2013 --
+	Better namespace for static files
 v0.2.0, 6/24/2013 -- 
 	Fixed bug in adding example photo to a Photo Campaign, 
 	Fixed campaign link using relative rather than absolute path,
