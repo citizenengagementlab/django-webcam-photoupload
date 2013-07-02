@@ -1,14 +1,3 @@
-
-//Adding forEach support for IE...
-
-if ( !Array.prototype.forEach ) {
-  Array.prototype.forEach = function(fn, scope) {
-    for(var i = 0, len = this.length; i < len; ++i) {
-      fn.call(scope || this, this[i], i, this);
-    }
-  }
-}
-
 //spin.js options
 var opts = {
   lines: 13, // The number of lines to draw
@@ -31,11 +20,6 @@ var opts = {
 var target = document.getElementById('caption_form');
 var spinner = new Spinner(opts).spin(target);
 
-
-
-
-
-
 //lazy load
 $("img.lazy").lazyload({
     effect       : "fadeIn"
@@ -46,7 +30,6 @@ $("ul#photo_grid > li").not(".first").hover(function() {
 })
 
 //flash
-
 function flash(){
     $('.flashDiv')
     .show()  //show the hidden div
@@ -70,7 +53,6 @@ $("#start_upload button").click(function(event) {
 });
 
 //Webcam options
-
 webcam.set_swf_url('../../static/swf/webcam.swf');
 webcam.set_shutter_sound(true, "../../static/mp3/shutter.mp3");
 webcam.set_quality(90);
@@ -93,7 +75,6 @@ function stepBack() {
 }
 
 //Character limit on TextArea
-
 var text = $("#id_message") 
 var max_length = text.attr("max-length");
 if (text.val().length >= max_length) {
@@ -105,7 +86,7 @@ if (text.val().length >= max_length) {
     
 $(document).ready(function() {
 $('.spinner').hide();
-//cache
+
 var text = $("#id_message"),
     max_length = text.attr("maxlength"),
     label = $('label[for=id_message] span');
@@ -134,7 +115,7 @@ $('#id_message').keyup(function(){
 function zipLookup(zip) {
     $.ajax({
         type: 'get',
-        url: '/usps/zip_lookup',
+        url: '/photo/ziplookup/zip_lookup',
         data: {
             zip: zip
         },
@@ -212,7 +193,7 @@ function drawText(context, options) {
     } else {
         var name_text = options.name+" - "+options.location;        
     }
-    console.log(name_text);
+   
     context.fillStyle = "rgba(255, 255, 255, 1)";
     context.font = "bold 20px museo-slab";
     context.textAlign = "end";
@@ -311,7 +292,7 @@ $("#uploadDirect").click(function(e) {
         data = new FormData();
         data.append('photo', $("#id_photo")[0].files[0]);
 
-    $.ajax({
+        $.ajax({
             type: 'POST',
             url:"upload_raw_photo",
             processData:false,
@@ -344,31 +325,31 @@ $("#uploadDirect").click(function(e) {
 $("#sendForm").click(function(e) {
     e.preventDefault();
     this.disabled=true;
-    console.log(this.disabled);
-    console.log(this);
+    
     var canvas = document.getElementById("canvas");
     var dataURL = canvas.toDataURL();
-        $("#sendForm").val("");
+    $('#id_photo_dataurl').val(dataURL);
+    console.log($('#id_photo_dataurl'))
+    $("#sendForm").val("");
     $(".spinner").show();
-
-
     $('input').removeClass('error');
     $('label').removeClass('error');
 
-
-    $.ajax({type: 'POST',
+    $.ajax({
+        type: 'POST',
         url:"submit",
-        contentType: "application/json",
-        dataType: "json",
-        data: {captioned_photo: dataURL,
-         name:$('#id_name').val(),
-         zip_code: $('#id_zip_code').val(),
-         email: $('#id_email').val(),
-         message: $('#id_message').val(),
-         raw_photo_pk: $('#id_raw_photo_pk').val(),
-         akid: $('#id_akid').val()
+        contentType:'multipart/form-data',
+        data: {
+            // captioned_photo: $('#id_photo_dataurl').val(),
+            captioned_photo: dataURL,
+            name:$('#id_name').val(),
+            zip_code: $('#id_zip_code').val(),
+            email: $('#id_email').val(),
+            message: $('#id_message').val(),
+            raw_photo_pk: $('#id_raw_photo_pk').val(),
         },
-        error: function(jqXHR, textStatus) {
+       error: function(jqXHR, textStatus) {
+        console.log('hello?')
             $(".spinner").hide();
              $("#sendForm").val("Submit");
             var errors = $.parseJSON(jqXHR.responseText);
@@ -377,6 +358,10 @@ $("#sendForm").click(function(e) {
             $("#sendForm").removeAttr("disabled")
         },
         success: function(jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown.isRejected);
+            console.log(errorThrown.error);
+            console.log(errorThrown.getResponseHeader);
+            console.log(errorThrown.statusText);
             $(".spinner").hide();
             $('#upload').hide();
             $('#black_overlay').fadeOut();
@@ -384,5 +369,8 @@ $("#sendForm").click(function(e) {
             $("#sendForm").removeAttr("disabled")
             $("#sendForm").val("Submit");
         }
-    });
+    });  
 });
+
+
+
