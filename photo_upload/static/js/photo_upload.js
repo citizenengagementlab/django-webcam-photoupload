@@ -120,7 +120,7 @@ function zipLookup(zip) {
             zip: zip
         },
         error: function(d) {
-            alert("There has been an error.")
+            alert("Error looking up zip code.")
             return false;
         },
         success: function(d) {
@@ -329,7 +329,6 @@ $("#sendForm").click(function(e) {
     var canvas = document.getElementById("canvas");
     var dataURL = canvas.toDataURL();
     $('#id_photo_dataurl').val(dataURL);
-    console.log($('#id_photo_dataurl'))
     $("#sendForm").val("");
     $(".spinner").show();
     $('input').removeClass('error');
@@ -340,7 +339,6 @@ $("#sendForm").click(function(e) {
         url:"submit",
         contentType:'multipart/form-data',
         data: {
-            // captioned_photo: $('#id_photo_dataurl').val(),
             captioned_photo: dataURL,
             name:$('#id_name').val(),
             zip_code: $('#id_zip_code').val(),
@@ -349,19 +347,14 @@ $("#sendForm").click(function(e) {
             raw_photo_pk: $('#id_raw_photo_pk').val(),
         },
        error: function(jqXHR, textStatus) {
-        console.log('hello?')
             $(".spinner").hide();
-             $("#sendForm").val("Submit");
+            $("#sendForm").val("Submit");
             var errors = $.parseJSON(jqXHR.responseText);
             $('input#id_'+errors.field).addClass('error');
             $('label[for="id_'+errors.field+'"]').addClass('error');
             $("#sendForm").removeAttr("disabled")
         },
         success: function(jqXHR, textStatus, errorThrown) {
-            console.log(errorThrown.isRejected);
-            console.log(errorThrown.error);
-            console.log(errorThrown.getResponseHeader);
-            console.log(errorThrown.statusText);
             $(".spinner").hide();
             $('#upload').hide();
             $('#black_overlay').fadeOut();
