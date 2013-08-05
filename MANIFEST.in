@@ -1,3 +1,4 @@
 include *.txt
 recursive-include photo_upload *.py *.html *.js *.css *.swf *.less *.gif *.png *.mp3 *.json
-recursive-include ziplookup *.py .json
+recursive-include ziplookup *.py
+recursive-include ziplookup/fixtures *.json
