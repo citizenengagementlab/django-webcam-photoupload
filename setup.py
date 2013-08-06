@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 setup(
     name='django-webcam-photoupload',
-    version='0.3.0',
+    version='0.3.1',
     author='Mike Vattuone',
     author_email='mike.v@engagementlab.org',
     url='=http://www.engagementlab.org',
