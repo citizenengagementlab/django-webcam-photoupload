@@ -13,7 +13,7 @@ def captioned_file_name(instance, filename):
 class PhotoCampaign(models.Model):
 	title = models.CharField(max_length=50)
 	slug = models.SlugField()
-	logo = models.ImageField(upload_to='logos/', null=True, blank=True)
+	logo = models.ImageField(upload_to='logos/', storage=media, null=True, blank=True)
 	description = models.TextField()
 	default_message = models.TextField(null=True,blank=True)
 	example_photo = models.ImageField(upload_to=example_file_name,null=True,blank=True)
