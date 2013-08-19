@@ -3,10 +3,10 @@ from setuptools import find_packages
 
 setup(
     name='django-webcam-photoupload',
-    version='0.3.2',
+    version='0.3.3',
     author='Mike Vattuone',
     author_email='mike.v@engagementlab.org',
-    url='=http://www.engagementlab.org',
+    url='https://github.com/citizenengagementlab/django-webcam-photoupload',
     license='LICENSE.txt',
     description='Webcam photo uploads for the movement',
     long_description=open('README.txt').read(),

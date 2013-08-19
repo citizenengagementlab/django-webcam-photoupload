@@ -1,3 +1,4 @@
+v0.3.3  8/19/2013 -- Moved origin to github public repo.
 v0.3.2  8/5/2013 -- Cleaned up CSS to reduce initial conflicts in photo index template and rest of site.
 v0.3.1, 8/5/2013 -- Holy month later!  Fixed MANIFEST and did minor cleanup.
 v0.3.0, 7/1/2013 --
